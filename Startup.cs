@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using EventHorizon.Game.Server.Core.Account.Repo;
+using EventHorizon.Game.Server.Core.Account.Repo.Impl;
+using EventHorizon.Game.Server.Core.ExceptionFilter;
 using EventHorizon.Game.Server.Core.Level.Repo;
 using EventHorizon.Game.Server.Core.Level.Repo.Impl;
 using MediatR;
@@ -30,17 +33,22 @@ namespace EventHorizon.Game.Server.Core
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
-            
+
             services.AddAuthentication("Bearer")
-                    .AddIdentityServerAuthentication(options =>
+                .AddIdentityServerAuthentication(options =>
                 {
                     options.RequireHttpsMetadata = HostingEnvironment.IsProduction() || HostingEnvironment.IsStaging();
                     options.Authority = Configuration["Auth:Authority"];
                     options.ApiName = Configuration["Auth:ApiName"];
                 });
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(typeof(JsonExceptionFilter));
+            });
 
             services.AddScoped<ILevelRepository, LevelRepository>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<IAccountLevelRepository, AccountLevelRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -5,6 +5,6 @@ namespace EventHorizon.Game.Server.Core.Account.Repo
 {
     public interface IAccountRepository
     {
-        Task<AccountEntity> FindUserOrCreateAccount(string id);
+        Task<AccountEntity> FindOrCreate(string id);
     }
 }

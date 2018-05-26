@@ -26,6 +26,7 @@ namespace EventHorizon.Game.Server.Core.Level.Details.Handler
             {
                 Id = entity.Id,
                 ServerAddress = entity.ServerAddress,
+                Tags = entity.Tags,
             };
         }
     }

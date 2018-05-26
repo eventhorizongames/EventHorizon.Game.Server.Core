@@ -30,10 +30,6 @@ namespace EventHorizon.Game.Server.Core.Level.Register.Handler
         }
         private LevelDetails MapToDetails(LevelEntity entity)
         {
-            if (entity == null)
-            {
-                return null;
-            }
             return new LevelDetails
             {
                 Id = entity.Id,

@@ -1,8 +1,10 @@
 using System.Threading;
 using System.Threading.Tasks;
+using EventHorizon.Game.Server.Core.Account.Level;
 using EventHorizon.Game.Server.Core.Account.Model;
 using EventHorizon.Game.Server.Core.Account.Repo;
 using EventHorizon.Game.Server.Core.Level.Details;
+using EventHorizon.Game.Server.Core.Level.Search;
 using MediatR;
 
 namespace EventHorizon.Game.Server.Core.Account.Details.Handler
@@ -20,7 +22,7 @@ namespace EventHorizon.Game.Server.Core.Account.Details.Handler
 
         public async Task<AccountDetails> Handle(AccountDetailsEvent request, CancellationToken cancellationToken)
         {
-            return await Map(await _accountRepository.FindUserOrCreateAccount(request.Id));
+            return await Map(await _accountRepository.FindOrCreate(request.Id));
         }
 
         private async Task<AccountDetails> Map(AccountEntity entity)
@@ -28,9 +30,9 @@ namespace EventHorizon.Game.Server.Core.Account.Details.Handler
             return new AccountDetails
             {
                 Id = entity.Id,
-                Level = await _mediator.Send(new LevelDetailsEvent
+                Level = await _mediator.Send(new AccountGetLevelEvent
                 {
-                    Id = entity.Id,
+                    AccountId = entity.Id,
                 }),
             };
         }

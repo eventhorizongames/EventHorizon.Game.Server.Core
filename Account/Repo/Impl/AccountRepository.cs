@@ -15,7 +15,7 @@ namespace EventHorizon.Game.Server.Core.Account.Repo.Impl
             _mediator = mediator;
         }
 
-        public async Task<AccountEntity> FindUserOrCreateAccount(string id)
+        public Task<AccountEntity> FindOrCreate(string id)
         {
             AccountEntity account;
             if (!ACCOUNTS.TryGetValue(id, out account))
@@ -23,13 +23,10 @@ namespace EventHorizon.Game.Server.Core.Account.Repo.Impl
                 account = new AccountEntity
                 {
                     Id = id,
-                    CurrentLevel = await _mediator.Send(new FindFirstLevelIdOfTagEvent
-                    {
-                        Tag = "home",
-                    }),
                 };
+                ACCOUNTS.TryAdd(account.Id, account);
             }
-            return account;
+            return Task.FromResult(account);
         }
     }
 }
