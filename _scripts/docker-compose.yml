@@ -10,7 +10,7 @@ services:
       ASPNETCORE_ENVIRONMENT: Production
       ASPNETCORE_URLS: http://*:5000
     ports:
-      - 23501:5000
+      - 5000
     volumes:
       - ~/Configs/Game/Server/Core/appsettings.Production.json:/app/appsettings.Production.json
     network_mode: "bridge"
