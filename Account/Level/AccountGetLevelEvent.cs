@@ -1,9 +1,9 @@
-using EventHorizon.Game.Server.Core.Level.Model;
+using EventHorizon.Game.Server.Core.Zone.Model;
 using MediatR;
 
-namespace EventHorizon.Game.Server.Core.Account.Level
+namespace EventHorizon.Game.Server.Core.Account.Zone
 {
-    public struct AccountGetLevelEvent : IRequest<LevelDetails>
+    public struct AccountGetZoneEvent : IRequest<ZoneDetails>
     {
         public string AccountId { get; set; }
     }

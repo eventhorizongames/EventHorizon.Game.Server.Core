@@ -1,7 +1,7 @@
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using EventHorizon.Game.Server.Core.Account.Model;
-using EventHorizon.Game.Server.Core.Level.Search;
+using EventHorizon.Game.Server.Core.Zone.Search;
 using MediatR;
 
 namespace EventHorizon.Game.Server.Core.Account.Repo.Impl

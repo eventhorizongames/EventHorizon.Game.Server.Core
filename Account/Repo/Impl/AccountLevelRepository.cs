@@ -3,22 +3,22 @@ using EventHorizon.Game.Server.Core.Account.Exceptions;
 
 namespace EventHorizon.Game.Server.Core.Account.Repo.Impl
 {
-    public class AccountLevelRepository : IAccountLevelRepository
+    public class AccountZoneRepository : IAccountZoneRepository
     {
-        private static ConcurrentDictionary<string, string> ACCOUNT_LEVELS = new ConcurrentDictionary<string, string>();
-        public string AccountLevel(string accountId)
+        private static ConcurrentDictionary<string, string> ACCOUNT_ZoneS = new ConcurrentDictionary<string, string>();
+        public string AccountZone(string accountId)
         {
-            string levelId;
-            if (!ACCOUNT_LEVELS.TryGetValue(accountId, out levelId))
+            string ZoneId;
+            if (!ACCOUNT_ZoneS.TryGetValue(accountId, out ZoneId))
             {
-                throw new AccountLevelNotFoundException(accountId);
+                throw new AccountZoneNotFoundException(accountId);
             }
-            return levelId;
+            return ZoneId;
         }
 
-        public void SetAccountLevel(string accountId, string levelId)
+        public void SetAccountZone(string accountId, string ZoneId)
         {
-            ACCOUNT_LEVELS.AddOrUpdate(accountId, levelId, (key, currentLevelId) => levelId);
+            ACCOUNT_ZoneS.AddOrUpdate(accountId, ZoneId, (key, currentZoneId) => ZoneId);
         }
     }
 }

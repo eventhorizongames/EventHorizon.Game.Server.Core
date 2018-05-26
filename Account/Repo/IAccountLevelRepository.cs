@@ -1,8 +1,8 @@
 namespace EventHorizon.Game.Server.Core.Account.Repo
 {
-    public interface IAccountLevelRepository
+    public interface IAccountZoneRepository
     {
-        string AccountLevel(string accountId);
-        void SetAccountLevel(string accountId, string levelId);
+        string AccountZone(string accountId);
+        void SetAccountZone(string accountId, string ZoneId);
     }
 }

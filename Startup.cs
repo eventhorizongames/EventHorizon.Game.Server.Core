@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using EventHorizon.Game.Server.Core.Account.Repo;
 using EventHorizon.Game.Server.Core.Account.Repo.Impl;
 using EventHorizon.Game.Server.Core.ExceptionFilter;
-using EventHorizon.Game.Server.Core.Level.Repo;
-using EventHorizon.Game.Server.Core.Level.Repo.Impl;
+using EventHorizon.Game.Server.Core.Zone.Repo;
+using EventHorizon.Game.Server.Core.Zone.Repo.Impl;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -46,9 +46,9 @@ namespace EventHorizon.Game.Server.Core
                 options.Filters.Add(typeof(JsonExceptionFilter));
             });
 
-            services.AddScoped<ILevelRepository, LevelRepository>();
+            services.AddScoped<IZoneRepository, ZoneRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
-            services.AddScoped<IAccountLevelRepository, AccountLevelRepository>();
+            services.AddScoped<IAccountZoneRepository, AccountZoneRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 
-namespace EventHorizon.Game.Server.Core.Level.Model
+namespace EventHorizon.Game.Server.Core.Zone.Model
 {
-    public class LevelEntity
+    public class ZoneEntity
     {
         public string Id { get; set; }
         public string ServerAddress { get; set; } 

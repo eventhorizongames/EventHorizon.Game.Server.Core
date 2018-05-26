@@ -1,10 +1,10 @@
 using System.Threading;
 using System.Threading.Tasks;
-using EventHorizon.Game.Server.Core.Account.Level;
+using EventHorizon.Game.Server.Core.Account.Zone;
 using EventHorizon.Game.Server.Core.Account.Model;
 using EventHorizon.Game.Server.Core.Account.Repo;
-using EventHorizon.Game.Server.Core.Level.Details;
-using EventHorizon.Game.Server.Core.Level.Search;
+using EventHorizon.Game.Server.Core.Zone.Details;
+using EventHorizon.Game.Server.Core.Zone.Search;
 using MediatR;
 
 namespace EventHorizon.Game.Server.Core.Account.Details.Handler
@@ -30,7 +30,7 @@ namespace EventHorizon.Game.Server.Core.Account.Details.Handler
             return new AccountDetails
             {
                 Id = entity.Id,
-                Level = await _mediator.Send(new AccountGetLevelEvent
+                Zone = await _mediator.Send(new AccountGetZoneEvent
                 {
                     AccountId = entity.Id,
                 }),

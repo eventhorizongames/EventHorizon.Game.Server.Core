@@ -1,46 +1,46 @@
 using System.Threading;
 using System.Threading.Tasks;
 using EventHorizon.Game.Server.Core.Account.Exceptions;
-using EventHorizon.Game.Server.Core.Account.Level;
+using EventHorizon.Game.Server.Core.Account.Zone;
 using EventHorizon.Game.Server.Core.Account.Model;
 using EventHorizon.Game.Server.Core.Account.Repo;
-using EventHorizon.Game.Server.Core.Level.Details;
-using EventHorizon.Game.Server.Core.Level.Model;
-using EventHorizon.Game.Server.Core.Level.Repo;
-using EventHorizon.Game.Server.Core.Level.Search;
+using EventHorizon.Game.Server.Core.Zone.Details;
+using EventHorizon.Game.Server.Core.Zone.Model;
+using EventHorizon.Game.Server.Core.Zone.Repo;
+using EventHorizon.Game.Server.Core.Zone.Search;
 using MediatR;
 
-namespace EventHorizon.Game.Server.Core.Account.Level.Handler
+namespace EventHorizon.Game.Server.Core.Account.Zone.Handler
 {
-    public class AccountGetLevelHandler : IRequestHandler<AccountGetLevelEvent, LevelDetails>
+    public class AccountGetZoneHandler : IRequestHandler<AccountGetZoneEvent, ZoneDetails>
     {
         private readonly IMediator _mediator;
-        private readonly IAccountLevelRepository _accountLevelRepository;
+        private readonly IAccountZoneRepository _accountZoneRepository;
 
-        public AccountGetLevelHandler(IMediator mediator, IAccountLevelRepository accountLevelRepository)
+        public AccountGetZoneHandler(IMediator mediator, IAccountZoneRepository accountZoneRepository)
         {
             _mediator = mediator;
-            _accountLevelRepository = accountLevelRepository;
+            _accountZoneRepository = accountZoneRepository;
         }
 
-        public async Task<LevelDetails> Handle(AccountGetLevelEvent request, CancellationToken cancellationToken)
+        public async Task<ZoneDetails> Handle(AccountGetZoneEvent request, CancellationToken cancellationToken)
         {
-            string levelId = string.Empty;
+            string ZoneId = string.Empty;
             try
             {
-                levelId = _accountLevelRepository.AccountLevel(request.AccountId);
+                ZoneId = _accountZoneRepository.AccountZone(request.AccountId);
             }
-            catch (AccountLevelNotFoundException)
+            catch (AccountZoneNotFoundException)
             {
-                levelId = await _mediator.Send(new FindFirstLevelIdOfTagEvent
+                ZoneId = await _mediator.Send(new FindFirstZoneIdOfTagEvent
                 {
                     Tag = "home",
                 });
-                _accountLevelRepository.SetAccountLevel(request.AccountId, levelId);
+                _accountZoneRepository.SetAccountZone(request.AccountId, ZoneId);
             }
-            return await _mediator.Send(new LevelDetailsEvent
+            return await _mediator.Send(new ZoneDetailsEvent
             {
-                Id = levelId,
+                Id = ZoneId,
             });
         }
     }
