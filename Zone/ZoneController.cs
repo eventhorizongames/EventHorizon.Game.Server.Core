@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using EventHorizon.Game.Server.Core.Zone.Details;
 using EventHorizon.Game.Server.Core.Zone.Exceptions;
@@ -20,6 +22,13 @@ namespace EventHorizon.Game.Server.Core.Zone
         public ZoneController(IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+        // GET api/Zone
+        [HttpGet]
+        public async Task<IEnumerable<ZoneDetails>> Details()
+        {
+            return await _mediator.Send(new AllZoneDetailsEvent());
         }
 
         // GET api/Zone/{id}/Details
