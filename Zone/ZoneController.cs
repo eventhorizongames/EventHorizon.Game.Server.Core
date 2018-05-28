@@ -58,5 +58,16 @@ namespace EventHorizon.Game.Server.Core.Zone
                 Id = Zone.Id,
             };
         }
+
+        // POST api/Zone/Register
+        [HttpPost("{id}/Unregister")]
+        public async Task<IActionResult> Unregister([FromRoute] string id)
+        {
+            await _mediator.Publish(new UnregisterZoneEvent
+            {
+                ZoneId = id
+            });
+            return Ok();
+        }
     }
 }
