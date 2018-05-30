@@ -78,6 +78,14 @@ namespace EventHorizon.Schedule.Cron
         }
 
         /// <summary>
+        /// Parses a crontab field expression representing seconds.
+        /// </summary>
+        public static CrontabField Seconds(string expression)
+        {
+            return new CrontabField(CrontabFieldImpl.Seconds, expression);
+        }
+
+        /// <summary>
         /// Parses a crontab field expression representing minutes.
         /// </summary>
         public static CrontabField Minutes(string expression)

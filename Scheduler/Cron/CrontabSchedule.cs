@@ -17,27 +17,29 @@ namespace EventHorizon.Schedule.Cron
         private readonly CrontabField _daysOfWeek;
         private readonly CrontabField _hours;
         private readonly CrontabField _minutes;
+        private readonly CrontabField _seconds;
         private readonly CrontabField _months;
 
         private CrontabSchedule(string expression)
         {
             Debug.Assert(expression != null);
 
-            var fields = expression.Split((char[]) Separators, StringSplitOptions.RemoveEmptyEntries);
+            var fields = expression.Split((char[])Separators, StringSplitOptions.RemoveEmptyEntries);
 
-            if (fields.Length != 5)
+            if (fields.Length != 6)
             {
                 throw new FormatException(string.Format(
                     "'{0}' is not a valid crontab expression. It must contain at least 6 components of a schedule "
-                    + "(in the sequence of minutes, hours, days, months, days of week).",
+                    + "(in the sequence of seconds, minutes, hours, days, months, days of week).",
                     expression));
             }
 
-            _minutes = CrontabField.Minutes(fields[0]);
-            _hours = CrontabField.Hours(fields[1]);
-            _days = CrontabField.Days(fields[2]);
-            _months = CrontabField.Months(fields[3]);
-            _daysOfWeek = CrontabField.DaysOfWeek(fields[4]);
+            _seconds = CrontabField.Seconds(fields[0]);
+            _minutes = CrontabField.Minutes(fields[1]);
+            _hours = CrontabField.Hours(fields[2]);
+            _days = CrontabField.Days(fields[3]);
+            _months = CrontabField.Months(fields[4]);
+            _daysOfWeek = CrontabField.DaysOfWeek(fields[5]);
         }
 
         private static Calendar Calendar
@@ -79,6 +81,7 @@ namespace EventHorizon.Schedule.Cron
             var baseDay = baseTime.Day;
             var baseHour = baseTime.Hour;
             var baseMinute = baseTime.Minute;
+            var baseSecond = baseTime.Second;
 
             var endYear = endTime.Year;
             var endMonth = endTime.Month;
@@ -88,7 +91,20 @@ namespace EventHorizon.Schedule.Cron
             var month = baseMonth;
             var day = baseDay;
             var hour = baseHour;
-            var minute = baseMinute + 1;
+            var minute = baseMinute;
+            var second = baseSecond + 1;
+
+            //
+            // Seconds
+            //
+
+            second = _seconds.Next(second);
+
+            if (second == nil)
+            {
+                second = _seconds.GetFirst();
+                minute++;
+            }
 
             //
             // Minute
@@ -98,8 +114,13 @@ namespace EventHorizon.Schedule.Cron
 
             if (minute == nil)
             {
+                second = _seconds.GetFirst();
                 minute = _minutes.GetFirst();
                 hour++;
+            }
+            else if (minute > baseMinute)
+            {
+                second = _seconds.GetFirst();
             }
 
             //
@@ -110,12 +131,14 @@ namespace EventHorizon.Schedule.Cron
 
             if (hour == nil)
             {
+                second = _seconds.GetFirst();
                 minute = _minutes.GetFirst();
                 hour = _hours.GetFirst();
                 day++;
             }
             else if (hour > baseHour)
             {
+                second = _seconds.GetFirst();
                 minute = _minutes.GetFirst();
             }
 
@@ -125,10 +148,11 @@ namespace EventHorizon.Schedule.Cron
 
             day = _days.Next(day);
 
-            RetryDayMonth:
+        RetryDayMonth:
 
             if (day == nil)
             {
+                second = _seconds.GetFirst();
                 minute = _minutes.GetFirst();
                 hour = _hours.GetFirst();
                 day = _days.GetFirst();
@@ -136,6 +160,7 @@ namespace EventHorizon.Schedule.Cron
             }
             else if (day > baseDay)
             {
+                second = _seconds.GetFirst();
                 minute = _minutes.GetFirst();
                 hour = _hours.GetFirst();
             }
@@ -148,6 +173,7 @@ namespace EventHorizon.Schedule.Cron
 
             if (month == nil)
             {
+                second = _seconds.GetFirst();
                 minute = _minutes.GetFirst();
                 hour = _hours.GetFirst();
                 day = _days.GetFirst();
@@ -156,6 +182,7 @@ namespace EventHorizon.Schedule.Cron
             }
             else if (month > baseMonth)
             {
+                second = _seconds.GetFirst();
                 minute = _minutes.GetFirst();
                 hour = _hours.GetFirst();
                 day = _days.GetFirst();
@@ -189,7 +216,7 @@ namespace EventHorizon.Schedule.Cron
                 goto RetryDayMonth;
             }
 
-            var nextTime = new DateTime(year, month, day, hour, minute, 0, 0, baseTime.Kind);
+            var nextTime = new DateTime(year, month, day, hour, minute, second, 0, baseTime.Kind);
 
             if (nextTime >= endTime)
                 return endTime;

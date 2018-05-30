@@ -9,6 +9,7 @@ namespace EventHorizon.Schedule.Cron
     [Serializable]
     public sealed class CrontabFieldImpl : IObjectReference
     {
+        public static readonly CrontabFieldImpl Seconds = new CrontabFieldImpl(CrontabFieldKind.Minute, 0, 59, null);
         public static readonly CrontabFieldImpl Minute = new CrontabFieldImpl(CrontabFieldKind.Minute, 0, 59, null);
         public static readonly CrontabFieldImpl Hour = new CrontabFieldImpl(CrontabFieldKind.Hour, 0, 23, null);
         public static readonly CrontabFieldImpl Day = new CrontabFieldImpl(CrontabFieldKind.Day, 1, 31, null);

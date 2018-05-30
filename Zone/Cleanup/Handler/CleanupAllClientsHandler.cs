@@ -15,14 +15,7 @@ namespace EventHorizon.Game.Server.Core.Zone.Cleanup.Handler
         }
         public async Task Handle(CleanupAllClientsEvent notification, CancellationToken cancellationToken)
         {
-            await Task.Delay(TimeSpan.FromSeconds(14));
             var allZones = await _zoneRepository.GetAll();
-            await Task.Delay(TimeSpan.FromSeconds(14));
-            allZones = await _zoneRepository.GetAll();
-            await Task.Delay(TimeSpan.FromSeconds(14));
-            allZones = await _zoneRepository.GetAll();
-            await Task.Delay(TimeSpan.FromSeconds(14));
-            allZones = await _zoneRepository.GetAll();
         }
     }
 }
