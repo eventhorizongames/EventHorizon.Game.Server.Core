@@ -52,7 +52,7 @@ namespace EventHorizon.Game.Server.Core
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<IAccountZoneRepository, AccountZoneRepository>();
 
-            services.AddSingleton<IScheduledTask, CleanupClientScheduleTask>();
+            services.AddSingleton<IScheduledTask, CleanupOldZonesScheduledTask>();
 
             services.AddScheduler((sender, args) =>
             {

@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using EventHorizon.Game.Server.Core.Zone.Model;
@@ -26,6 +27,7 @@ namespace EventHorizon.Game.Server.Core.Zone.Register.Handler
                 Id = details.Id,
                 ServerAddress = details.ServerAddress,
                 Tags = details.Tags,
+                LastPing = DateTime.Now,
             };
         }
         private ZoneDetails MapToDetails(ZoneEntity entity)

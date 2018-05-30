@@ -8,12 +8,12 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace EventHorizon.Game.Server.Core.Zone.Cleanup
 {
-    public class CleanupClientScheduleTask : IScheduledTask
+    public class CleanupOldZonesScheduledTask : IScheduledTask
     {
         public string Schedule => "*/15 * * * * *";
         private readonly IServiceScopeFactory _serviceScopeFactory;
 
-        public CleanupClientScheduleTask(IServiceScopeFactory serviceScopeFactory)
+        public CleanupOldZonesScheduledTask(IServiceScopeFactory serviceScopeFactory)
         {
             _serviceScopeFactory = serviceScopeFactory;
         }
@@ -22,7 +22,7 @@ namespace EventHorizon.Game.Server.Core.Zone.Cleanup
         {
             using (var serviceScope = _serviceScopeFactory.CreateScope())
             {
-                await serviceScope.ServiceProvider.GetService<IMediator>().Publish(new CleanupAllClientsEvent());
+                await serviceScope.ServiceProvider.GetService<IMediator>().Publish(new CleanupOldZonesEvent());
             }
         }
     }
