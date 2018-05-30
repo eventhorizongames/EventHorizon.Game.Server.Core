@@ -29,6 +29,7 @@ namespace EventHorizon.Game.Server.Core.Zone.Details.Handler
                 Id = entity.Id,
                 ServerAddress = entity.ServerAddress,
                 Tags = entity.Tags,
+                LastPing = entity.LastPing,
             };
         }
     }
