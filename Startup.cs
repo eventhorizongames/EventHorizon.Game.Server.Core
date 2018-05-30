@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using EventHorizon.Game.Server.Core.Account.Repo;
 using EventHorizon.Game.Server.Core.Account.Repo.Impl;
 using EventHorizon.Game.Server.Core.ExceptionFilter;
+using EventHorizon.Schedule;
+using EventHorizon.Game.Server.Core.Zone.Cleanup;
 using EventHorizon.Game.Server.Core.Zone.Repo;
 using EventHorizon.Game.Server.Core.Zone.Repo.Impl;
 using MediatR;
@@ -49,6 +51,14 @@ namespace EventHorizon.Game.Server.Core
             services.AddScoped<IZoneRepository, ZoneRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<IAccountZoneRepository, AccountZoneRepository>();
+
+            services.AddSingleton<IScheduledTask, CleanupClientScheduleTask>();
+
+            services.AddScheduler((sender, args) =>
+            {
+                Console.WriteLine(args.Exception.Message);
+                args.SetObserved();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

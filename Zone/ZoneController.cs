@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using EventHorizon.Game.Server.Core.Zone.Details;
 using EventHorizon.Game.Server.Core.Zone.Exceptions;
 using EventHorizon.Game.Server.Core.Zone.Model;
+using EventHorizon.Game.Server.Core.Zone.Ping;
 using EventHorizon.Game.Server.Core.Zone.Register;
 using EventHorizon.Game.Server.Core.Zone.Repo;
 using MediatR;
@@ -64,6 +65,17 @@ namespace EventHorizon.Game.Server.Core.Zone
         public async Task<IActionResult> Unregister([FromRoute] string id)
         {
             await _mediator.Publish(new UnregisterZoneEvent
+            {
+                ZoneId = id
+            });
+            return Ok();
+        }
+
+        // POST api/Zone/Register
+        [HttpPost("{id}/Ping")]
+        public async Task<IActionResult> Ping([FromRoute] string id)
+        {
+            await _mediator.Publish(new PingZoneEvent
             {
                 ZoneId = id
             });

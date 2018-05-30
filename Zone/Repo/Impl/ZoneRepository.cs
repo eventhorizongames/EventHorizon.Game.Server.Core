@@ -30,25 +30,35 @@ namespace EventHorizon.Game.Server.Core.Zone.Repo.Impl
         }
         public Task<ZoneEntity> FindById(string id)
         {
-            var Zone = new ZoneEntity();
-            if (!ZONES.TryGetValue(id, out Zone))
+            var zone = new ZoneEntity();
+            if (!ZONES.TryGetValue(id, out zone))
             {
                 throw new ZoneNotFoundException(id);
             }
-            return Task.FromResult(Zone);
+            return Task.FromResult(zone);
         }
-        public Task<ZoneEntity> Add(ZoneEntity Zone)
+        public Task<ZoneEntity> Add(ZoneEntity zone)
         {
-            Zone.Id = Guid.NewGuid().ToString();
-            if (!ZONES.TryAdd(Zone.Id, Zone))
+            zone.Id = Guid.NewGuid().ToString();
+            if (!ZONES.TryAdd(zone.Id, zone))
             {
-                throw new ZoneExistsException(Zone.Id);
+                throw new ZoneExistsException(zone.Id);
             }
-            return Task.FromResult(Zone);
+            return Task.FromResult(zone);
         }
-        public Task<bool> Remove(ZoneEntity Zone)
+
+        public async Task<ZoneEntity> Update(ZoneEntity zone)
         {
-            return Task.FromResult(ZONES.TryRemove(Zone.Id, out Zone));
+            if (!ZONES.TryUpdate(zone.Id, zone, await FindById(zone.Id)))
+            {
+                throw new ZoneNotFoundException(zone.Id);
+            }
+            return zone;
+        }
+
+        public Task<bool> Remove(ZoneEntity zone)
+        {
+            return Task.FromResult(ZONES.TryRemove(zone.Id, out zone));
         }
     }
 }

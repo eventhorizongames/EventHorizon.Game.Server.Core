@@ -11,6 +11,7 @@ namespace EventHorizon.Game.Server.Core.Zone.Repo
         Task<ZoneEntity> Find(Func<ZoneEntity, bool> predicate);
         Task<ZoneEntity> FindById(string id);
         Task<ZoneEntity> Add(ZoneEntity Zone);
+        Task<ZoneEntity> Update(ZoneEntity Zone);
         Task<bool> Remove(ZoneEntity Zone);
     }
 }
