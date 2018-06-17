@@ -17,6 +17,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using EventHorizon.WebSocket;
+using EventHorizon.Game.Server.Core.Bus;
 
 namespace EventHorizon.Game.Server.Core
 {
@@ -42,11 +44,20 @@ namespace EventHorizon.Game.Server.Core
                     options.RequireHttpsMetadata = HostingEnvironment.IsProduction() || HostingEnvironment.IsStaging();
                     options.Authority = Configuration["Auth:Authority"];
                     options.ApiName = Configuration["Auth:ApiName"];
+                    options.TokenRetriever = WebSocketTokenRetriever.FromHeaderAndQueryString;
                 });
             services.AddMvc(options =>
             {
                 options.Filters.Add(typeof(JsonExceptionFilter));
             });
+            services.AddSignalR();
+            services.AddCors(options => options.AddPolicy("CorsPolicy",
+                builder =>
+                {
+                    builder.AllowAnyMethod().AllowAnyHeader()
+                        .AllowAnyOrigin()
+                        .AllowCredentials();
+                }));
 
             services.AddScoped<IZoneRepository, ZoneRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
@@ -69,7 +80,13 @@ namespace EventHorizon.Game.Server.Core
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors("CorsPolicy");
             app.UseAuthentication();
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<CoreBus>("/coreBus");
+            });
 
             app.UseMvc();
         }
