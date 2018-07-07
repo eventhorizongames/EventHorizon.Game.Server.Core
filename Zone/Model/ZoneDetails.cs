@@ -5,9 +5,18 @@ namespace EventHorizon.Game.Server.Core.Zone.Model
 {
     public class ZoneDetails
     {
-        public string Id { get; set; }
-        public string ServerAddress { get; set; }
-        public IList<string> Tags { get; set; }
-        public DateTime LastPing { get; set; }
+        public readonly static ZoneDetails NULL = new ZoneDetails
+        {
+            Id = null,
+        };
+        public string Id { get; internal set; }
+        public string ServerAddress { get; internal set; }
+        public IList<string> Tags { get; internal set; }
+        public DateTime LastPing { get; internal set; }
+
+        public bool IsFound()
+        {
+            return Id != null;
+        }
     }
 }

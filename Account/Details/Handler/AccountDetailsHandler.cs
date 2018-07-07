@@ -6,6 +6,9 @@ using EventHorizon.Game.Server.Core.Account.Repo;
 using EventHorizon.Game.Server.Core.Zone.Details;
 using EventHorizon.Game.Server.Core.Zone.Search;
 using MediatR;
+using EventHorizon.Game.Server.Core.Player.Events.Details;
+using EventHorizon.Game.Server.Core.Player.Events.Create;
+using EventHorizon.Game.Server.Core.Player.Events.Zone;
 
 namespace EventHorizon.Game.Server.Core.Account.Details.Handler
 {
@@ -27,13 +30,38 @@ namespace EventHorizon.Game.Server.Core.Account.Details.Handler
 
         private async Task<AccountDetails> Map(AccountEntity entity)
         {
+            // Get Player Details
+            var playerDetails = await _mediator.Send(new PlayerGetDetailsEvent
+            {
+                Id = entity.Id
+            });
+            if (playerDetails.IsNew())
+            {
+                playerDetails = await _mediator.Send(new PlayerCreateNewEvent
+                {
+                    Id = entity.Id
+                });
+            }
+            // Get the Player's Zone
+            var zone = await _mediator.Send(new ZoneDetailsEvent
+            {
+                Id = playerDetails.Position.CurrentZone,
+            });
+            if (!zone.IsFound())
+            {
+                playerDetails = await _mediator.Send(new PlayerFindNewZoneEvent
+                {
+                    Player = playerDetails
+                });
+            }
             return new AccountDetails
             {
                 Id = entity.Id,
-                Zone = await _mediator.Send(new AccountGetZoneEvent
+                Player = playerDetails,
+                Zone = await _mediator.Send(new ZoneDetailsEvent
                 {
-                    AccountId = entity.Id,
-                }),
+                    Id = playerDetails.Position.CurrentZone,
+                })
             };
         }
     }

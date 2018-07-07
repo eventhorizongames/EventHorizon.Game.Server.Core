@@ -1,5 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
+using EventHorizon.Game.Server.Core.Zone.Exceptions;
 using EventHorizon.Game.Server.Core.Zone.Model;
 using EventHorizon.Game.Server.Core.Zone.Repo;
 using MediatR;
@@ -17,7 +18,14 @@ namespace EventHorizon.Game.Server.Core.Zone.Details.Handler
 
         public async Task<ZoneDetails> Handle(ZoneDetailsEvent request, CancellationToken cancellationToken)
         {
-            return Map(await _ZoneRepository.FindById(request.Id));
+            try
+            {
+                return Map(await _ZoneRepository.FindById(request.Id));
+            }
+            catch (ZoneNotFoundException)
+            {
+                return ZoneDetails.NULL;
+            }
         }
 
         public ZoneDetails Map(ZoneEntity entity)

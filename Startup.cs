@@ -19,6 +19,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using EventHorizon.WebSocket;
 using EventHorizon.Game.Server.Core.Bus;
+using EventHorizon.Game.Server.Core.Player;
 
 namespace EventHorizon.Game.Server.Core
 {
@@ -70,6 +71,8 @@ namespace EventHorizon.Game.Server.Core
                 Console.WriteLine(args.Exception.Message);
                 args.SetObserved();
             });
+
+            services.AddPlayer(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -80,6 +83,7 @@ namespace EventHorizon.Game.Server.Core
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UsePlayer();
             app.UseCors("CorsPolicy");
             app.UseAuthentication();
 
