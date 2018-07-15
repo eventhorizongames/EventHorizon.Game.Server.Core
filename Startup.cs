@@ -21,6 +21,7 @@ using EventHorizon.WebSocket;
 using EventHorizon.Game.Server.Core.Bus;
 using EventHorizon.Game.Server.Core.Player;
 using Microsoft.AspNetCore.Authentication;
+using EventHorizon.Game.Server.Core.Admin.Bus;
 
 namespace EventHorizon.Game.Server.Core
 {
@@ -103,6 +104,7 @@ namespace EventHorizon.Game.Server.Core
 
             app.UseSignalR(routes =>
             {
+                routes.MapHub<AdminBus>("/admin");
                 routes.MapHub<CoreBus>("/coreBus");
             });
 
