@@ -24,7 +24,7 @@ namespace EventHorizon.Game.Server.Core.Admin.Bus
             return Task.CompletedTask;
         }
 
-        public async Task<IEnumerable<ZoneDetails>> GetALlZones()
+        public async Task<IEnumerable<ZoneDetails>> GetAllZones()
         {
             return await _mediator.Send(new AllZoneDetailsEvent
             {
