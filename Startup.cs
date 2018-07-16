@@ -22,6 +22,8 @@ using EventHorizon.Game.Server.Core.Bus;
 using EventHorizon.Game.Server.Core.Player;
 using Microsoft.AspNetCore.Authentication;
 using EventHorizon.Game.Server.Core.Admin.Bus;
+using Microsoft.AspNetCore.SignalR;
+using EventHorizon.Game.Server.Core.Player.Connection;
 
 namespace EventHorizon.Game.Server.Core
 {
@@ -67,6 +69,7 @@ namespace EventHorizon.Game.Server.Core
                 options.Filters.Add(typeof(JsonExceptionFilter));
             });
             services.AddSignalR();
+            services.AddSingleton<IUserIdProvider, SubUserIdProvider>();
             services.AddCors(options => options.AddPolicy("CorsPolicy",
                 builder =>
                 {

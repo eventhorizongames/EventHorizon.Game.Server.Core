@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using EventHorizon.Game.Server.Core.Admin.Event;
+using EventHorizon.Game.Server.Core.Admin.Model;
 using EventHorizon.Game.Server.Core.Zone.Details;
 using EventHorizon.Game.Server.Core.Zone.Model;
 using MediatR;
@@ -28,6 +30,15 @@ namespace EventHorizon.Game.Server.Core.Admin.Bus
         {
             return await _mediator.Send(new AllZoneDetailsEvent
             {
+            });
+        }
+
+        public async Task<AdminActionResponse> AdminAction(string action, object data)
+        {
+            return await _mediator.Send(new AdminActionEvent
+            {
+                Action = action,
+                Data = data,
             });
         }
     }

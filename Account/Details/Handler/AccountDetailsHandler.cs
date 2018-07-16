@@ -10,6 +10,9 @@ using EventHorizon.Game.Server.Core.Player.Events.Details;
 using EventHorizon.Game.Server.Core.Player.Events.Create;
 using EventHorizon.Game.Server.Core.Player.Events.Zone;
 using Microsoft.Extensions.Logging;
+using EventHorizon.Game.Server.Core.Player.UpdatePlayer;
+using EventHorizon.Game.Server.Core.Player.Model;
+using System;
 
 namespace EventHorizon.Game.Server.Core.Account.Details.Handler
 {

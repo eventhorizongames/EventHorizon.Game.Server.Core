@@ -1,12 +1,15 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
+using EventHorizon.Game.Server.Core.Account.Model;
 using EventHorizon.Game.Server.Core.Bus.Event;
+using EventHorizon.Game.Server.Core.Zone.Model;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
 
 namespace EventHorizon.Game.Server.Core.Bus
 {
-    public class CoreBus : Hub
+    public class CoreBus : Hub<ITypedCoreHub>
     {
         readonly IMediator _mediator;
         public CoreBus(IMediator mediator)
@@ -16,11 +19,22 @@ namespace EventHorizon.Game.Server.Core.Bus
 
         public override async Task OnConnectedAsync()
         {
+            await Groups.AddToGroupAsync(Context.ConnectionId, Context.ConnectionId);
             await _mediator.Publish(new ConnectToCoreEvent
             {
                 AccountId = Context.User.Claims.FirstOrDefault(a => a.Type == "sub")?.Value,
                 ConnectionId = Context.ConnectionId,
             });
         }
+        public override async Task OnDisconnectedAsync(Exception exception)
+        {
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, Context.ConnectionId);
+            await base.OnDisconnectedAsync(exception);
+        }
+    }
+    public interface ITypedCoreHub
+    {
+        Task AccountConnected(AccountDetails accountDetails);
+        Task PlayerZoneChanged(ZoneDetails zoneDetails);
     }
 }
