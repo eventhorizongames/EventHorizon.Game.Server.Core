@@ -10,7 +10,7 @@ namespace EventHorizon.Game.Server.Core.Zone.Cleanup
 {
     public class CleanupOldZonesScheduledTask : IScheduledTask
     {
-        public string Schedule => "*/15 * * * * *";
+        public string Schedule => "0 * * * * *"; // Every Minute
         private readonly IServiceScopeFactory _serviceScopeFactory;
 
         public CleanupOldZonesScheduledTask(IServiceScopeFactory serviceScopeFactory)

@@ -25,6 +25,7 @@ namespace EventHorizon.Game.Server.Core.Zone.Register.Handler
             return new ZoneEntity
             {
                 Id = details.Id,
+                ConnectionId = details.ConnectionId,
                 ServerAddress = details.ServerAddress,
                 Tags = details.Tags,
                 LastPing = DateTime.Now,
@@ -35,6 +36,7 @@ namespace EventHorizon.Game.Server.Core.Zone.Register.Handler
             return new ZoneDetails
             {
                 Id = entity.Id,
+                ConnectionId = entity.ConnectionId,
                 ServerAddress = entity.ServerAddress,
                 Tags = entity.Tags,
             };

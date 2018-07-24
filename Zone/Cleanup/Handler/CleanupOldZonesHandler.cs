@@ -9,7 +9,7 @@ namespace EventHorizon.Game.Server.Core.Zone.Cleanup.Handler
 {
     public class CleanupOldZonesHandler : INotificationHandler<CleanupOldZonesEvent>
     {
-        private static readonly int SECONDS_TO_EXPIRE = 15;
+        private static readonly int SECONDS_TO_EXPIRE = 45;
         private readonly IZoneRepository _zoneRepository;
         public CleanupOldZonesHandler(IZoneRepository zoneRepository)
         {

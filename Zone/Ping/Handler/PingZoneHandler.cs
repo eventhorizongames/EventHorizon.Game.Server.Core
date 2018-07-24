@@ -15,7 +15,7 @@ namespace EventHorizon.Game.Server.Core.Zone.Ping.Handler
         }
         public async Task Handle(PingZoneEvent notification, CancellationToken cancellationToken)
         {
-            var zone = await _zoneRepository.FindById(notification.ZoneId);
+            var zone = await _zoneRepository.Find(entity => entity.ConnectionId == notification.ConnectionId);
             zone.LastPing = DateTime.Now;
             await _zoneRepository.Update(zone);
         }
