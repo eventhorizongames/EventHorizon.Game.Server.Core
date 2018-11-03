@@ -5,10 +5,12 @@ using EventHorizon.Game.Server.Core.Admin.Model;
 using EventHorizon.Game.Server.Core.Zone.Details;
 using EventHorizon.Game.Server.Core.Zone.Model;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
 namespace EventHorizon.Game.Server.Core.Admin.Bus
 {
+    [Authorize]
     public class AdminBus : Hub
     {
         readonly IMediator _mediator;
