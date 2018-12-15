@@ -25,6 +25,7 @@ using EventHorizon.Game.Server.Core.Admin.Bus;
 using Microsoft.AspNetCore.SignalR;
 using EventHorizon.Game.Server.Core.Player.Connection;
 using EventHorizon.Game.Server.Core.Zone.Bus;
+using EventHorizon.Game.Server.Core.Player.Bus;
 
 namespace EventHorizon.Game.Server.Core
 {
@@ -74,8 +75,16 @@ namespace EventHorizon.Game.Server.Core
             services.AddCors(options => options.AddPolicy("CorsPolicy",
                 builder =>
                 {
-                    builder.AllowAnyMethod().AllowAnyHeader()
-                        .AllowAnyOrigin()
+                    builder.AllowAnyMethod()
+                    .AllowAnyHeader()
+                        .WithOrigins(
+                            Configuration
+                                .GetSection("Cors:Hosts")
+                                .GetChildren()
+                                .AsEnumerable()
+                                .Select(a => a.Value)
+                                .ToArray()
+                        )
                         .AllowCredentials();
                 }));
 
@@ -111,6 +120,7 @@ namespace EventHorizon.Game.Server.Core
                 routes.MapHub<AdminBus>("/admin");
                 routes.MapHub<CoreBus>("/coreBus");
                 routes.MapHub<ZoneCoreBus>("/zoneCore");
+                routes.MapHub<PlayerBus>("/player");
             });
 
             app.UseMvc();

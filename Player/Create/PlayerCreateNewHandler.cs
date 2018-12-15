@@ -7,7 +7,7 @@ using EventHorizon.Game.Server.Core.Player.UpdatePlayer;
 using EventHorizon.Game.Server.Core.Zone.Search;
 using MediatR;
 
-namespace EventHorizon.Game.Server.Core.Player.Events.Create.Handler
+namespace EventHorizon.Game.Server.Core.Player.Events.Create
 {
     public class PlayerCreateNewHandler : IRequestHandler<PlayerCreateNewEvent, PlayerDetails>
     {
@@ -34,7 +34,7 @@ namespace EventHorizon.Game.Server.Core.Player.Events.Create.Handler
                 },
                 Data = new
                 {
-                    New = true
+                    New = true // TODO: Change this to Created or a DateTime
                 },
             };
             await _mediator.Publish(new UpdatePlayerEvent

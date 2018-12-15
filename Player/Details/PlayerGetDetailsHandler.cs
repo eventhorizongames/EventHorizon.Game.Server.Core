@@ -4,7 +4,7 @@ using EventHorizon.Game.Server.Core.Player.Connection;
 using EventHorizon.Game.Server.Core.Player.Model;
 using MediatR;
 
-namespace EventHorizon.Game.Server.Core.Player.Events.Details.Handler
+namespace EventHorizon.Game.Server.Core.Player.Events.Details
 {
     public class PlayerGetDetailsHandler : IRequestHandler<PlayerGetDetailsEvent, PlayerDetails>
     {
@@ -16,9 +16,8 @@ namespace EventHorizon.Game.Server.Core.Player.Events.Details.Handler
 
         public async Task<PlayerDetails> Handle(PlayerGetDetailsEvent request, CancellationToken cancellationToken)
         {
-            var connection = await _connectionFactory.GetConnection();
-            var response = await connection.SendAction<PlayerDetails>("GetPlayer", request.Id);
-            return response;
+            return await (await _connectionFactory.GetConnection())
+                .SendAction<PlayerDetails>("GetPlayer", request.Id);
         }
     }
 }

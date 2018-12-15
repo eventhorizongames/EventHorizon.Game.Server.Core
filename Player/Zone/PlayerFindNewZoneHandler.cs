@@ -6,7 +6,7 @@ using EventHorizon.Game.Server.Core.Player.UpdatePlayer;
 using EventHorizon.Game.Server.Core.Zone.Search;
 using MediatR;
 
-namespace EventHorizon.Game.Server.Core.Player.Events.Zone.Handler
+namespace EventHorizon.Game.Server.Core.Player.Events.Zone
 {
     public class PlayerFindNewZoneHandler : IRequestHandler<PlayerFindNewZoneEvent, PlayerDetails>
     {

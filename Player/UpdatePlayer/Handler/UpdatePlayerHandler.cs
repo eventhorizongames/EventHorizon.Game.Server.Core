@@ -14,8 +14,9 @@ namespace EventHorizon.Game.Server.Core.Player.UpdatePlayer.Handler
         }
         public async Task Handle(UpdatePlayerEvent notification, CancellationToken cancellationToken)
         {
-            var connection = await _connectionFactory.GetConnection();
-            await connection.SendAction("UpdatePlayer", notification.Player);
+            await (await _connectionFactory.GetConnection())
+                .SendAction("UpdatePlayer", notification.Player)
+                .ConfigureAwait(false);
         }
     }
 }
