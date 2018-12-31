@@ -3,21 +3,27 @@ using System.Linq;
 using System.Threading.Tasks;
 using EventHorizon.Game.Server.Core.Account.Model;
 using EventHorizon.Game.Server.Core.Bus.Event;
+using EventHorizon.Game.Server.Core.Zone.Exceptions;
 using EventHorizon.Game.Server.Core.Zone.Model;
 using EventHorizon.Game.Server.Core.Zone.Ping;
 using EventHorizon.Game.Server.Core.Zone.Register;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging;
 
 namespace EventHorizon.Game.Server.Core.Zone.Bus
 {
     [Authorize]
     public class ZoneCoreBus : Hub<ITypedZoneCoreHub>
     {
+        readonly ILogger _logger;
         readonly IMediator _mediator;
-        public ZoneCoreBus(IMediator mediator)
+        public ZoneCoreBus(
+            ILogger<ZoneCoreBus> logger,
+            IMediator mediator)
         {
+            _logger = logger;
             _mediator = mediator;
         }
 
@@ -35,19 +41,37 @@ namespace EventHorizon.Game.Server.Core.Zone.Bus
         }
         public async Task<ZoneRegistered> RegisterZone(ZoneRegistrationDetails zoneDetails)
         {
-            var Zone = await _mediator.Send(new RegisterZoneEvent
+            try
             {
-                Zone = new ZoneDetails
+                var Zone = await _mediator.Send(new RegisterZoneEvent
                 {
-                    ConnectionId = Context.ConnectionId,
-                    ServerAddress = zoneDetails.ServerAddress,
-                    Tags = zoneDetails.Tags,
-                }
-            });
-            return new ZoneRegistered
+                    Zone = new ZoneDetails
+                    {
+                        Id = zoneDetails.Id,
+                        ServerAddress = zoneDetails.ServerAddress,
+                        Tags = zoneDetails.Tags,
+
+                        ConnectionId = Context.ConnectionId,
+                    }
+                });
+                return new ZoneRegistered(Zone.Id);
+
+            }
+            catch (ZoneIdInvalidException ex)
             {
-                Id = Zone.Id,
-            };
+                _logger.LogError("Failed to RegisterZone, Id invalid.", ex);
+                return new ZoneRegistered(zoneDetails.Id, ex.Code);
+            }
+            catch (ZoneExistsException ex)
+            {
+                _logger.LogError("Failed to RegisterZone, Already Exists.", ex);
+                return new ZoneRegistered(zoneDetails.Id, ex.Code);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Failed to RegisterZone, General Exception.", ex);
+                return new ZoneRegistered(zoneDetails.Id, "general");
+            }
         }
         public async Task Ping()
         {
