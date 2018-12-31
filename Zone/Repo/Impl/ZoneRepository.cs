@@ -39,10 +39,7 @@ namespace EventHorizon.Game.Server.Core.Zone.Repo.Impl
         }
         public Task<ZoneEntity> Add(ZoneEntity zone)
         {
-            if (String.IsNullOrEmpty(zone.Id))
-            {
-                throw new ZoneIdInvalidException();
-            }
+            zone.Id = Guid.NewGuid().ToString();
             if (!ZONES.TryAdd(zone.Id, zone))
             {
                 throw new ZoneExistsException(zone.Id);
