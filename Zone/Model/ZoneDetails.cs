@@ -12,7 +12,7 @@ namespace EventHorizon.Game.Server.Core.Zone.Model
         public string Id { get; internal set; }
         public string ServerAddress { get; internal set; }
         public string ConnectionId { get; internal set; }
-        public IList<string> Tags { get; internal set; }
+        public string Tag { get; internal set; }
         public DateTime LastPing { get; internal set; }
 
         public bool IsFound()

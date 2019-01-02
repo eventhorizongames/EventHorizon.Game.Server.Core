@@ -41,7 +41,7 @@ namespace EventHorizon.Game.Server.Core.Zone.Bus
                 {
                     ConnectionId = Context.ConnectionId,
                     ServerAddress = zoneDetails.ServerAddress,
-                    Tags = zoneDetails.Tags,
+                    Tag = zoneDetails.Tag,
                 }
             });
             return new ZoneRegistered

@@ -8,7 +8,7 @@ namespace EventHorizon.Game.Server.Core.Zone.Model
         public string Id { get; set; }
         public string ConnectionId { get; set; }
         public string ServerAddress { get; set; } 
-        public IList<string> Tags { get; set; }
+        public string Tag { get; set; }
         public DateTime LastPing { get; internal set; }
     }
 }

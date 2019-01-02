@@ -17,7 +17,7 @@ namespace EventHorizon.Game.Server.Core.Zone.Search.Handler
 
         public async Task<string> Handle(FindFirstZoneIdOfTagEvent request, CancellationToken cancellationToken)
         {
-            return (await _ZoneRepository.Find(a => a.Tags.Contains(request.Tag)))?.Id;
+            return (await _ZoneRepository.Find(a => a.Tag.Equals(request.Tag)))?.Id;
         }
     }
 }

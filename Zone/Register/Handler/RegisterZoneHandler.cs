@@ -27,7 +27,7 @@ namespace EventHorizon.Game.Server.Core.Zone.Register.Handler
                 Id = details.Id,
                 ConnectionId = details.ConnectionId,
                 ServerAddress = details.ServerAddress,
-                Tags = details.Tags,
+                Tag = details.Tag,
                 LastPing = DateTime.Now,
             };
         }
@@ -38,7 +38,7 @@ namespace EventHorizon.Game.Server.Core.Zone.Register.Handler
                 Id = entity.Id,
                 ConnectionId = entity.ConnectionId,
                 ServerAddress = entity.ServerAddress,
-                Tags = entity.Tags,
+                Tag = entity.Tag,
             };
         }
     }
