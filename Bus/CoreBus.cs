@@ -24,7 +24,7 @@ namespace EventHorizon.Game.Server.Core.Bus
             await Groups.AddToGroupAsync(Context.ConnectionId, Context.ConnectionId);
             await _mediator.Publish(new ConnectToCoreEvent
             {
-                AccountId = Context.User.Claims.FirstOrDefault(a => a.Type == "sub")?.Value,
+                AccountId = GetPlayerId(),
                 ConnectionId = Context.ConnectionId,
             });
         }
@@ -32,6 +32,11 @@ namespace EventHorizon.Game.Server.Core.Bus
         {
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, Context.ConnectionId);
             await base.OnDisconnectedAsync(exception);
+        }
+
+        private string GetPlayerId()
+        {
+            return Context.User.Claims.FirstOrDefault(a => a.Type == "sub")?.Value ?? String.Empty;
         }
     }
     public interface ITypedCoreHub

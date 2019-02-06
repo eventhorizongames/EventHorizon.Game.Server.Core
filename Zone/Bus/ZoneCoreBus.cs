@@ -39,6 +39,7 @@ namespace EventHorizon.Game.Server.Core.Zone.Bus
             {
                 Zone = new ZoneDetails
                 {
+                    Id = this.GetZoneIdFromContext(),
                     ConnectionId = Context.ConnectionId,
                     ServerAddress = zoneDetails.ServerAddress,
                     Tag = zoneDetails.Tag,
@@ -48,6 +49,13 @@ namespace EventHorizon.Game.Server.Core.Zone.Bus
             {
                 Id = Zone.Id,
             };
+        }
+        private string GetZoneIdFromContext()
+        {
+            return Context.User
+                .Claims
+                .FirstOrDefault(a => a.Type == "client_id")
+                ?.Value;
         }
         public async Task Ping()
         {

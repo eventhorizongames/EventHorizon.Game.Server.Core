@@ -18,7 +18,11 @@ namespace EventHorizon.Game.Server.Core.Zone.Register.Handler
 
         public async Task<ZoneDetails> Handle(RegisterZoneEvent notification, CancellationToken cancellationToken)
         {
-            return MapToDetails(await _ZoneRepository.Add(this.MapToEntity(notification.Zone)));
+            return MapToDetails(
+                await _ZoneRepository.Add(
+                    this.MapToEntity(notification.Zone)
+                )
+            );
         }
         private ZoneEntity MapToEntity(ZoneDetails details)
         {
