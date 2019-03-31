@@ -32,7 +32,7 @@ namespace EventHorizon.Game.Server.Core.Account.Connect.Handler
 
         private async Task SetCoreConnectionIdOnPlayer(PlayerDetails playerDetails, string coreConnectionId)
         {
-            playerDetails.Data.CoreConnectionId = coreConnectionId;
+            playerDetails.Data["CoreConnectionId"] = coreConnectionId;
             await _mediator.Publish(new UpdatePlayerEvent
             {
                 Player = playerDetails,

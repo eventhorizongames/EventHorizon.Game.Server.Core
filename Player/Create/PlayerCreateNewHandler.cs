@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
@@ -32,9 +33,9 @@ namespace EventHorizon.Game.Server.Core.Player.Events.Create
                     ZoneTag = "home",
                     Position = Vector3.Zero,
                 },
-                Data = new
+                Data = new Dictionary<string, object>
                 {
-                    New = true // TODO: Change this to Created or a DateTime
+                    { "new",  true } // TODO: Change this to Created or a DateTime
                 },
             };
             await _mediator.Publish(new UpdatePlayerEvent

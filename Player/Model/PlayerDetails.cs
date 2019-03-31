@@ -10,7 +10,7 @@ namespace EventHorizon.Game.Server.Core.Player.Model
         public string Name { get; set; }
         public string Locale { get; set; }
         public PositionState Position { get; set; }
-        public dynamic Data { get; set; }
+        public Dictionary<string, object> Data { get; set; }
 
 
         public bool IsNew()
