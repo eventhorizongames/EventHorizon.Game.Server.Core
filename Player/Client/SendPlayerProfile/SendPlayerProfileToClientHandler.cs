@@ -25,10 +25,9 @@ namespace EventHorizon.Game.Server.Core.Player.Client.SendPlayerProfile
             var connectionId = notification.ConnectionId;
             var playerId = notification.PlayerId;
             var playerDetails = await _mediator.Send(
-                new PlayerGetDetailsEvent
-                {
-                    Id = playerId
-                }
+                new QueryPlayerDetailsById(
+                    playerId
+                )
             );
             if (!playerDetails.IsFound())
             {

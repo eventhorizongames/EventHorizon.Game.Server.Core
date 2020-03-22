@@ -5,18 +5,25 @@ using MediatR;
 
 namespace EventHorizon.Game.Server.Core.Player.UpdatePlayer.Handler
 {
-    public class UpdatePlayerHandler : INotificationHandler<UpdatePlayerEvent>
+    public class UpdatePlayerHandler : IRequestHandler<UpdatePlayerCommand>
     {
-        readonly IPlayerConnectionFactory _connectionFactory;
-        public UpdatePlayerHandler(IPlayerConnectionFactory connectionFactory)
+        private readonly IPlayerConnectionFactory _connectionFactory;
+
+        public UpdatePlayerHandler(
+            IPlayerConnectionFactory connectionFactory
+        )
         {
             _connectionFactory = connectionFactory;
         }
-        public async Task Handle(UpdatePlayerEvent notification, CancellationToken cancellationToken)
+
+        public async Task<Unit> Handle(
+            UpdatePlayerCommand request,
+            CancellationToken cancellationToken
+        )
         {
             await (await _connectionFactory.GetConnection())
-                .SendAction("UpdatePlayer", notification.Player)
-                .ConfigureAwait(false);
+                .SendAction("UpdatePlayer", request.Player);
+            return Unit.Value;
         }
     }
 }

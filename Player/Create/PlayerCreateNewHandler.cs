@@ -1,36 +1,46 @@
-using System.Collections.Generic;
-using System.Numerics;
-using System.Threading;
-using System.Threading.Tasks;
-using EventHorizon.Game.Server.Core.Player.Connection;
-using EventHorizon.Game.Server.Core.Player.Model;
-using EventHorizon.Game.Server.Core.Player.UpdatePlayer;
-using EventHorizon.Game.Server.Core.Zone.Search;
-using MediatR;
-
 namespace EventHorizon.Game.Server.Core.Player.Events.Create
 {
+    using System.Collections.Generic;
+    using System.Numerics;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using EventHorizon.Game.Server.Core.Player.Model;
+    using EventHorizon.Game.Server.Core.Player.UpdatePlayer;
+    using EventHorizon.Game.Server.Core.Zone.Search;
+    using MediatR;
+
     public class PlayerCreateNewHandler : IRequestHandler<PlayerCreateNewEvent, PlayerDetails>
     {
-        readonly IMediator _mediator;
-        public PlayerCreateNewHandler(IMediator mediator)
+        private readonly IMediator _mediator;
+
+        public PlayerCreateNewHandler(
+            IMediator mediator
+        )
         {
             _mediator = mediator;
         }
 
-        public async Task<PlayerDetails> Handle(PlayerCreateNewEvent request, CancellationToken cancellationToken)
+        public async Task<PlayerDetails> Handle(
+            PlayerCreateNewEvent request,
+            CancellationToken cancellationToken
+        )
         {
-            var zoneId = await _mediator.Send(new FindFirstZoneIdOfTagEvent
-            {
-                Tag = "home",
-            });
+            var zoneTag = "home"; // TODO: This should come from Settings
+            var zoneId = await _mediator.Send(
+                new FindFirstZoneIdOfTag(
+                    zoneTag
+                )
+            );
             var newPlayer = new PlayerDetails
             {
                 Id = request.Id,
-                Position = new PositionState
+                Location = new LocationState
                 {
                     CurrentZone = zoneId,
-                    ZoneTag = "home",
+                    ZoneTag = zoneTag,
+                },
+                Transform = new TransformState
+                {
                     Position = Vector3.Zero,
                 },
                 Data = new Dictionary<string, object>
@@ -38,10 +48,11 @@ namespace EventHorizon.Game.Server.Core.Player.Events.Create
                     { "new",  true } // TODO: Change this to Created or a DateTime
                 },
             };
-            await _mediator.Publish(new UpdatePlayerEvent
-            {
-                Player = newPlayer,
-            });
+            await _mediator.Send(
+                new UpdatePlayerCommand(
+                    newPlayer
+                )
+            );
             return newPlayer;
         }
     }

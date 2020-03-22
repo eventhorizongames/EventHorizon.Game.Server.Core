@@ -1,31 +1,51 @@
-using System.Threading;
-using System.Threading.Tasks;
-using EventHorizon.Game.Server.Core.Player.Connection;
-using EventHorizon.Game.Server.Core.Player.Model;
-using EventHorizon.Game.Server.Core.Player.UpdatePlayer;
-using EventHorizon.Game.Server.Core.Zone.Search;
-using MediatR;
-
 namespace EventHorizon.Game.Server.Core.Player.Events.Zone
 {
+    using System.Threading;
+    using System.Threading.Tasks;
+    using EventHorizon.Game.Server.Core.Player.Model;
+    using EventHorizon.Game.Server.Core.Player.UpdatePlayer;
+    using EventHorizon.Game.Server.Core.Zone.Search;
+    using MediatR;
+
     public class PlayerFindNewZoneHandler : IRequestHandler<PlayerFindNewZoneEvent, PlayerDetails>
     {
         readonly IMediator _mediator;
-        public PlayerFindNewZoneHandler(IMediator mediator)
+
+        public PlayerFindNewZoneHandler(
+            IMediator mediator
+        )
         {
             _mediator = mediator;
         }
-        public async Task<PlayerDetails> Handle(PlayerFindNewZoneEvent request, CancellationToken cancellationToken)
+
+        public async Task<PlayerDetails> Handle(
+            PlayerFindNewZoneEvent request,
+            CancellationToken cancellationToken
+        )
         {
             var player = request.Player;
-            player.Position.CurrentZone = await _mediator.Send(new FindFirstZoneIdOfTagEvent
+            var location = player.Location;
+
+            var newZone = await _mediator.Send(
+                new FindFirstZoneIdOfTag(
+                    location.ZoneTag
+                )
+            );
+            if (string.IsNullOrEmpty(newZone))
             {
-                Tag = player.Position.ZoneTag,
-            });
-            await _mediator.Publish(new UpdatePlayerEvent
-            {
-                Player = player,
-            });
+                newZone = await _mediator.Send(
+                    new FindFirstZoneIdOfTag(
+                        "home"
+                    )
+                );
+            }
+            location.CurrentZone = newZone;
+            player.Location = location;
+            await _mediator.Send(
+                new UpdatePlayerCommand(
+                    player
+                )
+            );
             return player;
         }
     }

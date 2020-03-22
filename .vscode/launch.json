@@ -9,7 +9,7 @@
         "request": "launch",
         "preLaunchTask": "build",
         // If you have changed target frameworks, make sure to update the program path.
-        "program": "${workspaceFolder}/bin/Debug/netcoreapp2.1/EventHorizon.Game.Server.Core.dll",
+        "program": "${workspaceFolder}/bin/Debug/netcoreapp3.1/EventHorizon.Game.Server.Core.dll",
         "args": [],
         "cwd": "${workspaceFolder}",
         "stopAtEntry": false,

@@ -1,33 +1,50 @@
-using System.Collections.Concurrent;
-using System.Threading.Tasks;
-using EventHorizon.Game.Server.Core.Account.Exceptions;
-using EventHorizon.Game.Server.Core.Account.Model;
-
 namespace EventHorizon.Game.Server.Core.Account.Repo.Impl
 {
+    using System;
+    using System.Collections.Concurrent;
+    using System.Threading.Tasks;
+    using EventHorizon.Game.Server.Core.Account.Model;
+
     public class AccountZoneRepository : IAccountZoneRepository
     {
         private static ConcurrentDictionary<string, AccountZoneEntity> ACCOUNT_ZONES = new ConcurrentDictionary<string, AccountZoneEntity>();
-        public Task<AccountZoneEntity> FindById(string accountId)
-        {
-            var accountZone = default(AccountZoneEntity);
-            if (!ACCOUNT_ZONES.TryGetValue(accountId, out accountZone))
-            {
-                throw new AccountZoneNotFoundException(accountId);
-            }
-            return Task.FromResult(accountZone);
-        }
 
-        public Task<bool> Contains(string accountId)
+        public Task<AccountZoneEntity> FindById(
+            string accountId
+        )
         {
+            accountId = accountId ?? string.Empty;
+            if (ACCOUNT_ZONES.TryGetValue(
+                accountId,
+                out var accountZone
+            ))
+            {
+                return Task.FromResult(
+                    accountZone
+                );
+            }
             return Task.FromResult(
-                ACCOUNT_ZONES.ContainsKey(accountId)
+                AccountZoneEntity.NULL
             );
         }
 
-        public Task Set(AccountZoneEntity entity)
+        public Task Set(
+            AccountZoneEntity entity
+        )
         {
-            ACCOUNT_ZONES.AddOrUpdate(entity.Id, entity, (key, currentEntity) => entity);
+            if (string.IsNullOrEmpty(
+                entity.Id
+            ))
+            {
+                throw new ArgumentNullException(
+                    nameof(entity.Id)
+                );
+            }
+            ACCOUNT_ZONES.AddOrUpdate(
+                entity.Id,
+                entity,
+                (_, __) => entity
+            );
             return Task.CompletedTask;
         }
     }

@@ -1,44 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using EventHorizon.Game.Server.Core.Account.Repo;
-using EventHorizon.Game.Server.Core.Account.Repo.Impl;
-using EventHorizon.Game.Server.Core.ExceptionFilter;
-using EventHorizon.Schedule;
-using EventHorizon.Game.Server.Core.Zone.Cleanup;
-using EventHorizon.Game.Server.Core.Zone.Repo;
-using EventHorizon.Game.Server.Core.Zone.Repo.Impl;
-using MediatR;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using EventHorizon.WebSocket;
-using EventHorizon.Game.Server.Core.Bus;
-using EventHorizon.Game.Server.Core.Player;
-using Microsoft.AspNetCore.Authentication;
-using EventHorizon.Game.Server.Core.Admin.Bus;
-using Microsoft.AspNetCore.SignalR;
-using EventHorizon.Game.Server.Core.Player.Connection;
-using EventHorizon.Game.Server.Core.Zone.Bus;
-using EventHorizon.Game.Server.Core.Player.Bus;
-
-namespace EventHorizon.Game.Server.Core
+﻿namespace EventHorizon.Game.Server.Core
 {
+    using System;
+    using System.Linq;
+    using System.Reflection;
+    using EventHorizon.Game.Server.Core.Account.Repo;
+    using EventHorizon.Game.Server.Core.Account.Repo.Impl;
+    using EventHorizon.Schedule;
+    using EventHorizon.Game.Server.Core.Zone.Cleanup;
+    using EventHorizon.Game.Server.Core.Zone.Repo;
+    using EventHorizon.Game.Server.Core.Zone.Repo.Impl;
+    using MediatR;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using EventHorizon.WebSocket;
+    using EventHorizon.Game.Server.Core.Bus;
+    using EventHorizon.Game.Server.Core.Player;
+    using EventHorizon.Game.Server.Core.Admin.Bus;
+    using Microsoft.AspNetCore.SignalR;
+    using EventHorizon.Game.Server.Core.Player.Connection;
+    using EventHorizon.Game.Server.Core.Zone.Bus;
+    using EventHorizon.Game.Server.Core.Player.Bus;
+    using Microsoft.Extensions.Hosting;
+
     public class Startup
     {
-        public Startup(IConfiguration configuration, IHostingEnvironment env)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
             HostingEnvironment = env;
         }
 
         public IConfiguration Configuration { get; }
-        public IHostingEnvironment HostingEnvironment { get; }
+        public IWebHostEnvironment HostingEnvironment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -52,24 +47,8 @@ namespace EventHorizon.Game.Server.Core
                     options.Authority = Configuration["Auth:Authority"];
                     options.ApiName = Configuration["Auth:ApiName"];
                     options.TokenRetriever = WebSocketTokenRetriever.FromHeaderAndQueryString;
-                    options.JwtBearerEvents.OnMessageReceived = async context =>
-                        {
-                            var accessToken = context.Request.Query["access_token"];
-
-                            if (!string.IsNullOrEmpty(accessToken) &&
-                                (context.HttpContext.WebSockets.IsWebSocketRequest || context.Request.Headers["Accept"] == "text/event-stream"))
-                            {
-                                context.Token = context.Request.Query["access_token"];
-                                context.HttpContext.Request.Headers["Authorization"] = "Bearer " + context.Token;
-                                var result = await context.HttpContext.AuthenticateAsync();
-                                var user = context.HttpContext.User;
-                            }
-                        };
                 });
-            services.AddMvc(options =>
-            {
-                options.Filters.Add(typeof(JsonExceptionFilter));
-            });
+            services.AddRazorPages();
             services.AddSignalR();
             services.AddSingleton<IUserIdProvider, SubUserIdProvider>();
             services.AddCors(options => options.AddPolicy("CorsPolicy",
@@ -104,7 +83,7 @@ namespace EventHorizon.Game.Server.Core
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -112,18 +91,20 @@ namespace EventHorizon.Game.Server.Core
             }
 
             app.UsePlayer();
+
+            app.UseRouting();
+
             app.UseCors("CorsPolicy");
             app.UseAuthentication();
+            app.UseAuthorization();
 
-            app.UseSignalR(routes =>
+            app.UseEndpoints(routes =>
             {
                 routes.MapHub<AdminBus>("/admin");
                 routes.MapHub<CoreBus>("/coreBus");
                 routes.MapHub<ZoneCoreBus>("/zoneCore");
                 routes.MapHub<PlayerBus>("/player");
             });
-
-            app.UseMvc();
         }
     }
 }

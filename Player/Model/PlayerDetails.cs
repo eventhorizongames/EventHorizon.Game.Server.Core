@@ -1,15 +1,14 @@
-using System.Collections.Generic;
-using System.Linq;
-using Newtonsoft.Json.Linq;
-
 namespace EventHorizon.Game.Server.Core.Player.Model
 {
+    using System.Collections.Generic;
+
     public struct PlayerDetails
     {
         public string Id { get; set; }
         public string Name { get; set; }
         public string Locale { get; set; }
-        public PositionState Position { get; set; }
+        public TransformState Transform { get; set; }
+        public LocationState Location { get; set; }
         public Dictionary<string, object> Data { get; set; }
 
 

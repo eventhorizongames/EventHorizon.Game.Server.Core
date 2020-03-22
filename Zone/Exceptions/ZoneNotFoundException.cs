@@ -5,10 +5,20 @@ namespace EventHorizon.Game.Server.Core.Zone.Exceptions
     public class ZoneNotFoundException : Exception
     {
         public string ZoneId { get; }
-        public ZoneNotFoundException(string ZoneId)
-            : base(string.Format("Zone not found with ZoneId of {0}", ZoneId))
+        public string Tag { get; }
+        public ZoneNotFoundException(
+            string zoneId,
+            string tag
+        ) : base(
+            string.Format(
+                "Zone not found with ZoneId of {0} or Tag of {1}", 
+                zoneId,
+                tag
+            )
+        )
         {
-            this.ZoneId = ZoneId;
+            ZoneId = zoneId;
+            Tag = tag;
         }
 
         public ZoneNotFoundException(InvalidOperationException ex)

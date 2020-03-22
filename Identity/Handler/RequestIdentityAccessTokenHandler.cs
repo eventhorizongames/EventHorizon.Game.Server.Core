@@ -1,17 +1,12 @@
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using EventHorizon.Identity.Exceptions;
-using IdentityModel.Client;
-using MediatR;
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
-
 namespace EventHorizon.Identity.Handler
 {
+    using System.Threading;
+    using System.Threading.Tasks;
+    using EventHorizon.Identity.Exceptions;
+    using IdentityModel.Client;
+    using MediatR;
+    using Microsoft.Extensions.Configuration;
+
     public class RequestIdentityAccessTokenHandler : IRequestHandler<RequestIdentityAccessTokenEvent, string>
     {
         private readonly IConfiguration _configuration;

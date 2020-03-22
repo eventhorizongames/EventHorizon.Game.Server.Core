@@ -1,14 +1,14 @@
-using System;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-
 namespace EventHorizon.Game.Server.Core.ExceptionFilter
 {
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Hosting;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Filters;
+
     public class JsonExceptionFilter : IExceptionFilter
     {
-        private readonly IHostingEnvironment _env;
-        public JsonExceptionFilter(IHostingEnvironment env)
+        private readonly IWebHostEnvironment _env;
+        public JsonExceptionFilter(IWebHostEnvironment env)
         {
             _env = env;
         }

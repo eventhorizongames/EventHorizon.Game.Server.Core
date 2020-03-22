@@ -1,10 +1,17 @@
-using EventHorizon.Game.Server.Core.Player.Model;
-using MediatR;
-
 namespace EventHorizon.Game.Server.Core.Player.UpdatePlayer
 {
-    public class UpdatePlayerEvent : INotification
+    using EventHorizon.Game.Server.Core.Player.Model;
+    using MediatR;
+
+    public class UpdatePlayerCommand : IRequest
     {
-        public PlayerDetails Player { get; set; }
+        public PlayerDetails Player { get; }
+
+        public UpdatePlayerCommand(
+            PlayerDetails player
+        )
+        {
+            Player = player;
+        }
     }
 }

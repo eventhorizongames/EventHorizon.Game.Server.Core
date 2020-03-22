@@ -1,13 +1,13 @@
-namespace EventHorizon.Game.Server.Core.Player.Events.Create
+namespace EventHorizon.Game.Server.Core.Player.Events.Details
 {
     using EventHorizon.Game.Server.Core.Player.Model;
     using MediatR;
 
-    public class PlayerCreateNewEvent : IRequest<PlayerDetails>
+    public struct QueryPlayerDetailsById : IRequest<PlayerDetails>
     {
         public string Id { get; }
 
-        public PlayerCreateNewEvent(
+        public QueryPlayerDetailsById(
             string id
         )
         {
