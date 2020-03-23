@@ -56,8 +56,9 @@ namespace EventHorizon.Game.Server.Core.Zone.Repo.Impl
             CheckForNull(
                 zone
             );
-            if (ZONES.ContainsKey(
-                zone.Id
+            if (!ZONES.TryAdd(
+                zone.Id,
+                zone
             ))
             {
                 throw new ZoneExistsException(

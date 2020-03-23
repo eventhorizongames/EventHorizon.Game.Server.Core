@@ -12,6 +12,7 @@ namespace EventHorizon.Game.Server.Core.Account.Details.Handler
     using EventHorizon.Game.Server.Core.Zone.Exceptions;
     using EventHorizon.Game.Server.Core.Account.Zone;
     using EventHorizon.Game.Server.Core.Player.UpdatePlayer;
+    using EventHorizon.Game.Server.Core.Player.Model;
 
     public class GetAccountDetailsHandler : IRequestHandler<GetAccountDetails, AccountDetails>
     {
@@ -75,6 +76,11 @@ namespace EventHorizon.Game.Server.Core.Account.Details.Handler
                     playerDetails.Location.ZoneTag
                 );
             }
+            playerDetails.Location = new LocationState
+            {
+                CurrentZone = zone.Id,
+                ZoneTag = zone.Tag,
+            };
             await _mediator.Send(
                 new UpdatePlayerCommand(
                     playerDetails

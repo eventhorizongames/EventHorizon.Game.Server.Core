@@ -49,7 +49,8 @@
                     options.TokenRetriever = WebSocketTokenRetriever.FromHeaderAndQueryString;
                 });
             services.AddRazorPages();
-            services.AddSignalR();
+            services.AddSignalR()
+                .AddNewtonsoftJsonProtocol();
             services.AddSingleton<IUserIdProvider, SubUserIdProvider>();
             services.AddCors(options => options.AddPolicy("CorsPolicy",
                 builder =>
