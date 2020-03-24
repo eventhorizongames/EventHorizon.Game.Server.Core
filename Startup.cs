@@ -39,7 +39,8 @@
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
-
+            
+            services.AddHttpClient();
             services.AddAuthentication("Bearer")
                 .AddIdentityServerAuthentication(options =>
                 {

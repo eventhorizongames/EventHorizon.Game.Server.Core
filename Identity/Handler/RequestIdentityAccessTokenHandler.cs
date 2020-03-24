@@ -1,5 +1,6 @@
 namespace EventHorizon.Identity.Handler
 {
+    using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
     using EventHorizon.Identity.Exceptions;
@@ -10,10 +11,15 @@ namespace EventHorizon.Identity.Handler
     public class RequestIdentityAccessTokenHandler : IRequestHandler<RequestIdentityAccessTokenEvent, string>
     {
         private readonly IConfiguration _configuration;
+        private readonly IHttpClientFactory _clientFactory;
 
-        public RequestIdentityAccessTokenHandler(IConfiguration configuration)
+        public RequestIdentityAccessTokenHandler(
+            IConfiguration configuration,
+            IHttpClientFactory clientFactory
+        )
         {
             _configuration = configuration;
+            _clientFactory = clientFactory;
         }
 
         public async Task<string> Handle(RequestIdentityAccessTokenEvent message, CancellationToken cancellationToken)
@@ -23,8 +29,18 @@ namespace EventHorizon.Identity.Handler
             var clientSecret = _configuration["Auth:ClientSecret"];
             var apiScope = _configuration["Auth:ApiName"];
             // request token
-            var tokenClient = new TokenClient($"{tokenEndpoint}/connect/token", clientId, clientSecret);
-            var tokenResponse = await tokenClient.RequestClientCredentialsAsync(apiScope);
+            var tokenClient = new TokenClient(
+                _clientFactory.CreateClient(),
+                new TokenClientOptions
+                {
+                    Address = $"{tokenEndpoint}/connect/token",
+                    ClientId = clientId,
+                    ClientSecret = clientSecret
+                }
+            );
+            var tokenResponse = await tokenClient.RequestClientCredentialsTokenAsync(
+                apiScope
+            );
 
             if (tokenResponse.IsError)
             {
