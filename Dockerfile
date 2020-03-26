@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 WORKDIR /source
 
 # Copy the solution file
-COPY *.sln ./
+COPY ./*.sln ./
 
 # Copy the main source project files
 COPY src/*/*.csproj ./
