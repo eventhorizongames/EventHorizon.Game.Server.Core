@@ -24,6 +24,7 @@ namespace EventHorizon.Identity.Handler
 
         public async Task<string> Handle(RequestIdentityAccessTokenEvent message, CancellationToken cancellationToken)
         {
+            // TODO: Move to Settings Model
             var tokenEndpoint = _configuration["Auth:Authority"];
             var clientId = _configuration["Auth:ClientId"];
             var clientSecret = _configuration["Auth:ClientSecret"];

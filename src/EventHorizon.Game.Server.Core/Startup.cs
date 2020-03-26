@@ -1,11 +1,8 @@
 ﻿namespace EventHorizon.Game.Server.Core
 {
-    using System;
     using System.Linq;
-    using System.Reflection;
     using EventHorizon.Game.Server.Core.Account.Repo;
     using EventHorizon.Game.Server.Core.Account.Repo.Impl;
-    using EventHorizon.Schedule;
     using EventHorizon.Game.Server.Core.Zone.Cleanup;
     using EventHorizon.Game.Server.Core.Zone.Repo;
     using EventHorizon.Game.Server.Core.Zone.Repo.Impl;
@@ -23,6 +20,8 @@
     using EventHorizon.Game.Server.Core.Zone.Bus;
     using EventHorizon.Game.Server.Core.Player.Bus;
     using Microsoft.Extensions.Hosting;
+    using EventHorizon.Identity;
+    using EventHorizon.TimerService;
 
     public class Startup
     {
@@ -38,7 +37,10 @@
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
+            services.AddMediatR(
+                typeof(Startup).Assembly,
+                typeof(EventHorizonIdentityExtensions).Assembly
+            );
             
             services.AddHttpClient();
             services.AddAuthentication("Bearer")
@@ -73,26 +75,24 @@
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<IAccountZoneRepository, AccountZoneRepository>();
 
-            services.AddSingleton<IScheduledTask, CleanupOldZonesScheduledTask>();
-
-            services.AddScheduler((sender, args) =>
-            {
-                Console.WriteLine(args.Exception.Message);
-                args.SetObserved();
-            });
+            services.AddSingleton<ITimerTask, CleanupOldZonesTimerTask>();
 
             services.AddPlayer(Configuration);
+            services.AddServerState();
+
+            services.AddTimer();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UsePlayer();
+            app.UseServerState();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UsePlayer();
 
             app.UseRouting();
 

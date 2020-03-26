@@ -4,10 +4,13 @@
         {
             "label": "build",
             "command": "dotnet",
+            "group": {
+                "isDefault": true,
+                "kind": "build"
+            },
             "type": "process",
             "args": [
-                "build",
-                "${workspaceFolder}/EventHorizon.Game.Server.Core.csproj"
+                "build"
             ],
             "problemMatcher": "$msCompile"
         }

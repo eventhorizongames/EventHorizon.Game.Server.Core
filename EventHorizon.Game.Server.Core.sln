@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{D1FCDCBF-E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventHorizon.Game.Server.Core.Tests", "test\EventHorizon.Game.Server.Core.Tests\EventHorizon.Game.Server.Core.Tests.csproj", "{3168666B-4CFF-435A-BAF6-4B2F23F3ABE4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventHorizon.Identity", "src\EventHorizon.Identity\EventHorizon.Identity.csproj", "{B7A7D9A7-8153-4FA4-A1BF-05B183276A34}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,9 +50,22 @@ Global
 		{3168666B-4CFF-435A-BAF6-4B2F23F3ABE4}.Release|x64.Build.0 = Release|Any CPU
 		{3168666B-4CFF-435A-BAF6-4B2F23F3ABE4}.Release|x86.ActiveCfg = Release|Any CPU
 		{3168666B-4CFF-435A-BAF6-4B2F23F3ABE4}.Release|x86.Build.0 = Release|Any CPU
+		{B7A7D9A7-8153-4FA4-A1BF-05B183276A34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7A7D9A7-8153-4FA4-A1BF-05B183276A34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7A7D9A7-8153-4FA4-A1BF-05B183276A34}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B7A7D9A7-8153-4FA4-A1BF-05B183276A34}.Debug|x64.Build.0 = Debug|Any CPU
+		{B7A7D9A7-8153-4FA4-A1BF-05B183276A34}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B7A7D9A7-8153-4FA4-A1BF-05B183276A34}.Debug|x86.Build.0 = Debug|Any CPU
+		{B7A7D9A7-8153-4FA4-A1BF-05B183276A34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7A7D9A7-8153-4FA4-A1BF-05B183276A34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7A7D9A7-8153-4FA4-A1BF-05B183276A34}.Release|x64.ActiveCfg = Release|Any CPU
+		{B7A7D9A7-8153-4FA4-A1BF-05B183276A34}.Release|x64.Build.0 = Release|Any CPU
+		{B7A7D9A7-8153-4FA4-A1BF-05B183276A34}.Release|x86.ActiveCfg = Release|Any CPU
+		{B7A7D9A7-8153-4FA4-A1BF-05B183276A34}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{16210824-C218-4144-B6E3-997FAF633F53} = {21B7CEF0-48AF-4C5C-9400-2357A1BBE877}
 		{3168666B-4CFF-435A-BAF6-4B2F23F3ABE4} = {D1FCDCBF-E6FB-4FF6-8FEA-889BD9636ADF}
+		{B7A7D9A7-8153-4FA4-A1BF-05B183276A34} = {21B7CEF0-48AF-4C5C-9400-2357A1BBE877}
 	EndGlobalSection
 EndGlobal
