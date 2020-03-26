@@ -1,0 +1,21 @@
+name: $(MajorVersion).$(MinorVersion)$(rev:.r)
+pool:
+  name: Default
+
+steps:
+- task: DockerInstaller@0
+  displayName: Docker Installer
+  inputs:
+    dockerVersion: 18.03.0-ce
+    releaseType: stable
+
+- task: Docker@2
+  displayName: Build and Push Image - EventHorizon.Game.Server.Core
+  inputs: 
+    command: buildAndPush
+    containerRegistry: eventHorizonGamesConnection
+    dockerFile: Dockerfile
+    buildContext: $(Build.SourcesDirectory)
+    repository: ehz/game/server/core
+    tags: |
+      latest

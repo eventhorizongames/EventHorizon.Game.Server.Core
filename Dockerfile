@@ -2,8 +2,8 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 WORKDIR /source
 
-# copy csproj and restore as distinct layers
-COPY ./*.sln ./NuGet.Config  ./
+# Copy the solution file
+COPY *.sln ./
 
 # Copy the main source project files
 COPY src/*/*.csproj ./
