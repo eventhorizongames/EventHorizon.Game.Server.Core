@@ -2,6 +2,11 @@ name: $(MajorVersion).$(MinorVersion)$(rev:.r)
 pool:
   name: Default
 
+trigger:
+  branches:
+    include:
+      - master
+
 steps:
 - task: DockerInstaller@0
   displayName: Docker Installer
@@ -12,10 +17,22 @@ steps:
 - task: Docker@2
   displayName: Build and Push Image - EventHorizon.Game.Server.Core
   inputs: 
-    command: buildAndPush
     containerRegistry: eventHorizonGamesConnection
-    dockerFile: Dockerfile
-    buildContext: $(Build.SourcesDirectory)
     repository: ehz/game/server/core
+    command: buildAndPush
+    Dockerfile: Dockerfile
+    buildContext: $(Build.SourcesDirectory)
     tags: |
+      latest
+
+- task: Docker@2
+  displayName: Build and Push Image to Docker Hub
+  inputs:
+    containerRegistry: 'docker-hub'
+    repository: 'canhorn/ehz-platform-server-core'
+    command: 'buildAndPush'
+    Dockerfile: 'Dockerfile'
+    buildContext: $(Build.SourcesDirectory)
+    tags: |
+      $(Build.BuildNumber)
       latest
