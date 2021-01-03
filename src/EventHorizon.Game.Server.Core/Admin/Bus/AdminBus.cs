@@ -4,13 +4,14 @@ namespace EventHorizon.Game.Server.Core.Admin.Bus
     using System.Threading.Tasks;
     using EventHorizon.Game.Server.Core.Admin.Event;
     using EventHorizon.Game.Server.Core.Admin.Model;
+    using EventHorizon.Game.Server.Core.Admin.Policies;
     using EventHorizon.Game.Server.Core.Zone.Details;
     using EventHorizon.Game.Server.Core.Zone.Model;
     using MediatR;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.SignalR;
 
-    [Authorize("UserIdOrAdminPolicy")]
+    [Authorize(UserIdOrAdminPolicy.PolicyName)]
     public class AdminBus
         : Hub
     {
