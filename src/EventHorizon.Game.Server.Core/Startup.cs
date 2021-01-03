@@ -22,6 +22,7 @@
     using Microsoft.Extensions.Hosting;
     using EventHorizon.Identity;
     using EventHorizon.TimerService;
+    using EventHorizon.Game.Server.Core.Admin.Policies;
 
     public class Startup
     {
@@ -51,6 +52,11 @@
                     options.ApiName = Configuration["Auth:ApiName"];
                     options.TokenRetriever = WebSocketTokenRetriever.FromHeaderAndQueryString;
                 });
+            services.AddAuthorization(
+                options => options.AddUserIdOrAdminPolicy(
+                    Configuration["OwnerDetails:UserId"]
+                )
+            );
             services.AddRazorPages();
             services.AddSignalR()
                 .AddNewtonsoftJsonProtocol();
