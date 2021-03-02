@@ -15,17 +15,6 @@ steps:
     releaseType: stable
 
 - task: Docker@2
-  displayName: Build and Push Image - EventHorizon.Game.Server.Core
-  inputs: 
-    containerRegistry: eventHorizonGamesConnection
-    repository: ehz/game/server/core
-    command: buildAndPush
-    Dockerfile: Dockerfile
-    buildContext: $(Build.SourcesDirectory)
-    tags: |
-      latest
-
-- task: Docker@2
   displayName: Build and Push Image to Docker Hub
   inputs:
     containerRegistry: 'docker-hub'

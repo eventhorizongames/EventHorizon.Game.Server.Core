@@ -1,17 +1,23 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{21B7CEF0-48AF-4C5C-9400-2357A1BBE877}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventHorizon.Game.Server.Core", "src\EventHorizon.Game.Server.Core\EventHorizon.Game.Server.Core.csproj", "{16210824-C218-4144-B6E3-997FAF633F53}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventHorizon.Game.Server.Core", "src\EventHorizon.Game.Server.Core\EventHorizon.Game.Server.Core.csproj", "{16210824-C218-4144-B6E3-997FAF633F53}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{D1FCDCBF-E6FB-4FF6-8FEA-889BD9636ADF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventHorizon.Game.Server.Core.Tests", "test\EventHorizon.Game.Server.Core.Tests\EventHorizon.Game.Server.Core.Tests.csproj", "{3168666B-4CFF-435A-BAF6-4B2F23F3ABE4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventHorizon.Game.Server.Core.Tests", "test\EventHorizon.Game.Server.Core.Tests\EventHorizon.Game.Server.Core.Tests.csproj", "{3168666B-4CFF-435A-BAF6-4B2F23F3ABE4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventHorizon.Identity", "src\EventHorizon.Identity\EventHorizon.Identity.csproj", "{B7A7D9A7-8153-4FA4-A1BF-05B183276A34}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventHorizon.Identity", "src\EventHorizon.Identity\EventHorizon.Identity.csproj", "{B7A7D9A7-8153-4FA4-A1BF-05B183276A34}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{60DB74F3-CEB6-44A5-980F-ABC5417D0AB7}"
+	ProjectSection(SolutionItems) = preProject
+		azure-pipelines.yml = azure-pipelines.yml
+		Dockerfile = Dockerfile
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,9 +27,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{16210824-C218-4144-B6E3-997FAF633F53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -63,9 +66,15 @@ Global
 		{B7A7D9A7-8153-4FA4-A1BF-05B183276A34}.Release|x86.ActiveCfg = Release|Any CPU
 		{B7A7D9A7-8153-4FA4-A1BF-05B183276A34}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{16210824-C218-4144-B6E3-997FAF633F53} = {21B7CEF0-48AF-4C5C-9400-2357A1BBE877}
 		{3168666B-4CFF-435A-BAF6-4B2F23F3ABE4} = {D1FCDCBF-E6FB-4FF6-8FEA-889BD9636ADF}
 		{B7A7D9A7-8153-4FA4-A1BF-05B183276A34} = {21B7CEF0-48AF-4C5C-9400-2357A1BBE877}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {191B9214-5C72-4651-AFBB-0B0BFB03C7C3}
 	EndGlobalSection
 EndGlobal
