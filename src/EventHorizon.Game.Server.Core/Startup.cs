@@ -23,6 +23,7 @@
     using EventHorizon.Identity;
     using EventHorizon.TimerService;
     using EventHorizon.Game.Server.Core.Admin.Policies;
+    using EventHorizon.Game.Server.Core.Logging.ExternalHub;
 
     public class Startup
     {
@@ -112,6 +113,8 @@
                 routes.MapHub<CoreBus>("/coreBus");
                 routes.MapHub<ZoneCoreBus>("/zoneCore");
                 routes.MapHub<PlayerBus>("/player");
+
+                routes.MapHub<ClientLoggingHub>("/logging");
             });
         }
     }
