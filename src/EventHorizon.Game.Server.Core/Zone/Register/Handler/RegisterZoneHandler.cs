@@ -33,6 +33,7 @@ namespace EventHorizon.Game.Server.Core.Zone.Register.Handler
                 ServerAddress = details.ServerAddress,
                 Tag = details.Tag,
                 LastPing = DateTime.Now,
+                ServiceDetails = details.Details,
             };
         }
         private ZoneDetails MapToDetails(ZoneEntity entity)
@@ -43,6 +44,7 @@ namespace EventHorizon.Game.Server.Core.Zone.Register.Handler
                 ConnectionId = entity.ConnectionId,
                 ServerAddress = entity.ServerAddress,
                 Tag = entity.Tag,
+                Details = entity.ServiceDetails,
             };
         }
     }

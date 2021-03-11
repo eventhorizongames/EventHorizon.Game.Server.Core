@@ -9,6 +9,7 @@ namespace EventHorizon.Game.Server.Core.Zone.Model
         public string ServerAddress { get; set; }
         public string Tag { get; set; }
         public DateTime LastPing { get; internal set; }
+        public ServiceDetails ServiceDetails { get; internal set; }
 
         public bool IsFound()
         {

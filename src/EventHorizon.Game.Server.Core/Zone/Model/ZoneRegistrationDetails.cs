@@ -6,5 +6,6 @@ namespace EventHorizon.Game.Server.Core.Zone.Model
     {
         public string ServerAddress { get; set; }
         public string Tag { get; set; }
+        public ServiceDetails Details { get; set; }
     }
 }

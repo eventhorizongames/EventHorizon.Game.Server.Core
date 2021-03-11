@@ -14,6 +14,7 @@ namespace EventHorizon.Game.Server.Core.Zone.Model
         public string ConnectionId { get; internal set; }
         public string Tag { get; internal set; }
         public DateTime LastPing { get; internal set; }
+        public ServiceDetails Details { get; internal set; }
 
         public bool IsFound()
         {
