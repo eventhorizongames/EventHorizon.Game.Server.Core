@@ -1,5 +1,5 @@
 # Stage - Build
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /source
 
 # Copy the solution file
@@ -27,7 +27,7 @@ WORKDIR /source
 RUN dotnet publish --output /app/ --configuration Release --no-restore ./src/EventHorizon.Game.Server.Core/EventHorizon.Game.Server.Core.csproj
 
 # Stage - runtime
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS runtime
+FROM mcr.microsoft.com/dotnet/core/aspnet:5.0 AS runtime
 ARG BUILD_VERSION=0.0.0
 ENV APPLICATION_VERSION=$BUILD_VERSION
 

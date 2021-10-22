@@ -1,29 +1,30 @@
 ﻿namespace EventHorizon.Game.Server.Core
 {
-    using System.Linq;
     using EventHorizon.Game.Server.Core.Account.Repo;
     using EventHorizon.Game.Server.Core.Account.Repo.Impl;
+    using EventHorizon.Game.Server.Core.Admin.Bus;
+    using EventHorizon.Game.Server.Core.Admin.Policies;
+    using EventHorizon.Game.Server.Core.Bus;
+    using EventHorizon.Game.Server.Core.Logging.ExternalHub;
+    using EventHorizon.Game.Server.Core.Player;
+    using EventHorizon.Game.Server.Core.Player.Bus;
+    using EventHorizon.Game.Server.Core.Player.Connection;
+    using EventHorizon.Game.Server.Core.Zone.Bus;
     using EventHorizon.Game.Server.Core.Zone.Cleanup;
     using EventHorizon.Game.Server.Core.Zone.Repo;
     using EventHorizon.Game.Server.Core.Zone.Repo.Impl;
+    using EventHorizon.Identity;
+    using EventHorizon.Platform;
+    using EventHorizon.TimerService;
+    using EventHorizon.WebSocket;
     using MediatR;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.SignalR;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using EventHorizon.WebSocket;
-    using EventHorizon.Game.Server.Core.Bus;
-    using EventHorizon.Game.Server.Core.Player;
-    using EventHorizon.Game.Server.Core.Admin.Bus;
-    using Microsoft.AspNetCore.SignalR;
-    using EventHorizon.Game.Server.Core.Player.Connection;
-    using EventHorizon.Game.Server.Core.Zone.Bus;
-    using EventHorizon.Game.Server.Core.Player.Bus;
     using Microsoft.Extensions.Hosting;
-    using EventHorizon.Identity;
-    using EventHorizon.TimerService;
-    using EventHorizon.Game.Server.Core.Admin.Policies;
-    using EventHorizon.Game.Server.Core.Logging.ExternalHub;
+    using System.Linq;
 
     public class Startup
     {
@@ -43,7 +44,7 @@
                 typeof(Startup).Assembly,
                 typeof(EventHorizonIdentityExtensions).Assembly
             );
-            
+
             services.AddHttpClient();
             services.AddAuthentication("Bearer")
                 .AddIdentityServerAuthentication(options =>
@@ -109,6 +110,12 @@
 
             app.UseEndpoints(routes =>
             {
+                routes.MapPlatformDetails(
+                    options => options.SetVersion(
+                        Configuration["APPLICATION_VERSION"]
+                    )
+                );
+
                 routes.MapHub<AdminBus>("/admin");
                 routes.MapHub<CoreBus>("/coreBus");
                 routes.MapHub<ZoneCoreBus>("/zoneCore");

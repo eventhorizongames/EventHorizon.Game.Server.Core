@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31005.135
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31808.319
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{21B7CEF0-48AF-4C5C-9400-2357A1BBE877}"
 EndProject
@@ -20,6 +20,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventHorizon.TimerService", "src\EventHorizon.TimerService\EventHorizon.TimerService.csproj", "{45572C61-9648-4BFE-95CF-DE76C9FF4992}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventHorizon.Platform.Integration", "src\EventHorizon.Platform.Integration\EventHorizon.Platform.Integration.csproj", "{9334DE60-B781-43A8-B71F-C569DCA19E97}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -79,6 +81,18 @@ Global
 		{45572C61-9648-4BFE-95CF-DE76C9FF4992}.Release|x64.Build.0 = Release|Any CPU
 		{45572C61-9648-4BFE-95CF-DE76C9FF4992}.Release|x86.ActiveCfg = Release|Any CPU
 		{45572C61-9648-4BFE-95CF-DE76C9FF4992}.Release|x86.Build.0 = Release|Any CPU
+		{9334DE60-B781-43A8-B71F-C569DCA19E97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9334DE60-B781-43A8-B71F-C569DCA19E97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9334DE60-B781-43A8-B71F-C569DCA19E97}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9334DE60-B781-43A8-B71F-C569DCA19E97}.Debug|x64.Build.0 = Debug|Any CPU
+		{9334DE60-B781-43A8-B71F-C569DCA19E97}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9334DE60-B781-43A8-B71F-C569DCA19E97}.Debug|x86.Build.0 = Debug|Any CPU
+		{9334DE60-B781-43A8-B71F-C569DCA19E97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9334DE60-B781-43A8-B71F-C569DCA19E97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9334DE60-B781-43A8-B71F-C569DCA19E97}.Release|x64.ActiveCfg = Release|Any CPU
+		{9334DE60-B781-43A8-B71F-C569DCA19E97}.Release|x64.Build.0 = Release|Any CPU
+		{9334DE60-B781-43A8-B71F-C569DCA19E97}.Release|x86.ActiveCfg = Release|Any CPU
+		{9334DE60-B781-43A8-B71F-C569DCA19E97}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -88,6 +102,7 @@ Global
 		{3168666B-4CFF-435A-BAF6-4B2F23F3ABE4} = {D1FCDCBF-E6FB-4FF6-8FEA-889BD9636ADF}
 		{B7A7D9A7-8153-4FA4-A1BF-05B183276A34} = {21B7CEF0-48AF-4C5C-9400-2357A1BBE877}
 		{45572C61-9648-4BFE-95CF-DE76C9FF4992} = {21B7CEF0-48AF-4C5C-9400-2357A1BBE877}
+		{9334DE60-B781-43A8-B71F-C569DCA19E97} = {21B7CEF0-48AF-4C5C-9400-2357A1BBE877}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {191B9214-5C72-4651-AFBB-0B0BFB03C7C3}
