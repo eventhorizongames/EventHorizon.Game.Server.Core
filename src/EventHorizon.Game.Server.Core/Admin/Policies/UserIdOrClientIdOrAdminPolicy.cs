@@ -1,20 +1,22 @@
 ﻿namespace EventHorizon.Game.Server.Core.Admin.Policies
 {
-    using System;
+    using System.Linq;
     using Microsoft.AspNetCore.Authorization;
 
-    public static class UserIdOrAdminPolicy
+    public static class UserIdOrClientIdOrAdminPolicy
     {
-        public const string PolicyName = "UserIdOrAdmin";
+        public const string PolicyName = "UserIdOrClientIdOrAdmin";
 
         private const string SubjectClaimType = "sub";
         private const string RoleClaimType = "role";
+        private const string ClientIdClaimType = "client_id";
         private const string AdminRoleName = "Admin";
         private const string InvalidOwnerUserId = "<invalid>";
 
-        public static AuthorizationOptions AddUserIdOrAdminPolicy(
+        public static AuthorizationOptions AddUserIdOrClientIdOrAdminPolicy(
             this AuthorizationOptions options,
-            string ownerUserId
+            string ownerUserId,
+            string platformId
         )
         {
             if (string.IsNullOrWhiteSpace(
@@ -26,10 +28,20 @@
             options.AddPolicy(
                 PolicyName,
                 configure => configure.RequireAssertion(
+                // User Id Check
                     context => context.User.HasClaim(
                         SubjectClaimType,
                         ownerUserId
-                    ) || context.User.HasClaim(
+                    )
+                    // Client Id Check
+                    || context.User.Claims.Any(
+                        a => a.Type == ClientIdClaimType
+                            && a.Value.EndsWith(
+                                platformId
+                            )
+                    )
+                    // Admin Role Check
+                    || context.User.HasClaim(
                         RoleClaimType,
                         AdminRoleName
                     )

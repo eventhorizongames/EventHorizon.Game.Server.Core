@@ -11,7 +11,7 @@ namespace EventHorizon.Game.Server.Core.Admin.Bus
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.SignalR;
 
-    [Authorize(UserIdOrAdminPolicy.PolicyName)]
+    [Authorize(UserIdOrClientIdOrAdminPolicy.PolicyName)]
     public class AdminBus
         : Hub
     {

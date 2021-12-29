@@ -37,72 +37,72 @@ namespace EventHorizon.Game.Server.Core.Player.Connection.Impl
                     "On Action failed",
                     ex
                 );
-                throw ex;
+                throw;
             }
         }
         public void OnAction(
-            string actionName, 
+            string actionName,
             Action action
         )
         {
             try
             {
                 _connection.On(
-                    actionName, 
+                    actionName,
                     action
                 );
             }
             catch (Exception ex)
             {
                 _logger.LogError(
-                    "On Action failed", 
+                    "On Action failed",
                     ex
                 );
-                throw ex;
+                throw;
             }
         }
 
         public async Task<T> SendAction<T>(
-            string actionName, 
+            string actionName,
             object[] args
         )
         {
             try
             {
                 return await _connection.InvokeCoreAsync<T>(
-                    actionName, 
+                    actionName,
                     args
                 );
             }
             catch (Exception ex)
             {
                 _logger.LogError(
-                    "Send Action failed", 
+                    "Send Action failed",
                     ex
                 );
-                throw ex;
+                throw;
             }
         }
 
         public async Task SendAction(
-            string actionName, 
+            string actionName,
             object[] args
         )
         {
             try
             {
                 await _connection.InvokeCoreAsync(
-                    actionName, 
+                    actionName,
                     args
                 );
             }
             catch (Exception ex)
             {
                 _logger.LogError(
-                    "Send Action failed", 
+                    "Send Action failed",
                     ex
                 );
-                throw ex;
+                throw;
             }
         }
     }

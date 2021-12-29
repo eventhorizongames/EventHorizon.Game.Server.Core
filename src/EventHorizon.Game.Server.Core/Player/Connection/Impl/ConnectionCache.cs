@@ -49,7 +49,7 @@ namespace EventHorizon.Game.Server.Core.Player.Connection.Impl
                 {
                     _logger.LogError("Error connecting", ex);
                     _connection = null;
-                    throw ex;
+                    throw;
                 }
             }
             return _connection;
