@@ -1,17 +1,18 @@
 # Stage - Build
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /source
 
 # Copy the solution file
 COPY ./*.sln ./
 
 # Copy the main source project files
-COPY src/*/*.csproj ./
-RUN for file in $(ls *.csproj); do mkdir -p src/${file%.*}/ && mv $file src/${file%.*}/; done
+COPY src/EventHorizon.Game.Server.Core/*.csproj ./src/EventHorizon.Game.Server.Core/
+COPY src/EventHorizon.Identity/*.csproj ./src/EventHorizon.Identity/
+COPY src/EventHorizon.Platform.Integration/*.csproj ./src/EventHorizon.Platform.Integration/
+COPY src/EventHorizon.TimerService/*.csproj ./src/EventHorizon.TimerService/
 
 # Copy the test project files
-COPY test/*/*.csproj ./
-RUN for file in $(ls *.csproj); do mkdir -p test/${file%.*}/ && mv $file test/${file%.*}/; done
+COPY test/EventHorizon.Game.Server.Core.Tests/*.csproj ./test/EventHorizon.Game.Server.Core.Tests/
 
 RUN dotnet restore
 
@@ -27,7 +28,7 @@ WORKDIR /source
 RUN dotnet publish --output /app/ --configuration Release --no-restore ./src/EventHorizon.Game.Server.Core/EventHorizon.Game.Server.Core.csproj
 
 # Stage - runtime
-FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS runtime
 ARG BUILD_VERSION=0.0.0
 ENV APPLICATION_VERSION=$BUILD_VERSION
 

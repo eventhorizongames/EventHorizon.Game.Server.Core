@@ -1,23 +1,46 @@
+namespace EventHorizon.Game.Server.Core.Zone.Register.Handler;
+
 using System.Threading;
 using System.Threading.Tasks;
-using EventHorizon.Game.Server.Core.Zone.Model;
+
 using EventHorizon.Game.Server.Core.Zone.Repo;
+
 using MediatR;
 
-namespace EventHorizon.Game.Server.Core.Zone.Register.Handler
+public class UnregisterZoneByConnectionIdHandler
+    : INotificationHandler<UnregisterZoneByConnectionIdEvent>
 {
-    public class UnregisterZoneByConnectionIdHandler : INotificationHandler<UnregisterZoneByConnectionIdEvent>
+    private readonly IPublisher _publisher;
+    private readonly IZoneRepository _zoneRepository;
+
+    public UnregisterZoneByConnectionIdHandler(
+        IPublisher publisher,
+        IZoneRepository zoneRepository
+    )
     {
-        private readonly IZoneRepository _zoneRepository;
+        _publisher = publisher;
+        _zoneRepository = zoneRepository;
+    }
 
-        public UnregisterZoneByConnectionIdHandler(IZoneRepository zoneRepository)
+    public async Task Handle(
+        UnregisterZoneByConnectionIdEvent notification,
+        CancellationToken cancellationToken
+    )
+    {
+        var zone = await _zoneRepository.Find(
+            zone => zone.ConnectionId == notification.ConnectionId
+        );
+
+        if (!zone.IsFound())
         {
-            _zoneRepository = zoneRepository;
+            return;
         }
 
-        public async Task Handle(UnregisterZoneByConnectionIdEvent notification, CancellationToken cancellationToken)
-        {
-            await _zoneRepository.Remove(await _zoneRepository.Find(zone => zone.ConnectionId == notification.ConnectionId));
-        }
+        await _zoneRepository.Remove(zone);
+
+        await _publisher.Publish(
+            new ZoneUnregisteredEvent(zone.Id),
+            cancellationToken
+        );
     }
 }
